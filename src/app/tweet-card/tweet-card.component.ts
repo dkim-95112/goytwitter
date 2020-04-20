@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Tweet} from '../tweet';
+import {Tweet} from '../tweet.service';
 
 @Component({
-  selector: 'tweet-card',
+  selector: 'app-tweet-card',
   templateUrl: './tweet-card.component.html',
   styleUrls: ['./tweet-card.component.less']
 })
@@ -14,5 +14,4 @@ export class TweetCardComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }
