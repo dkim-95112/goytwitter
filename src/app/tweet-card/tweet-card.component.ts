@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {Tweet} from '../tweet';
 
 @Component({
   selector: 'tweet-card',
@@ -6,8 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./tweet-card.component.less']
 })
 export class TweetCardComponent implements OnInit {
+  @Input() tweet: Tweet;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
