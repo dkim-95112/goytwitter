@@ -4,6 +4,7 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 // import { MatSliderModule } from '@angular/material/slider';
 import {MatCardModule} from '@angular/material/card';
+import {MatFormFieldModule} from '@angular/material/form-field';
 import {AppComponent} from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import {TweetCardComponent} from './tweet-card/tweet-card.component';
@@ -13,13 +14,22 @@ import { FakeBackendInterceptor } from './_helpers';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
+import {MatIconModule} from '@angular/material/icon';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
 @NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     MatCardModule,
+    MatFormFieldModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule
   ],
   declarations: [
     AppComponent,
