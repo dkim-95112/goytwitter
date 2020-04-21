@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError} from 'rxjs/operators';
 import {throwError} from 'rxjs';
+import {Tweet} from '../_models/tweet';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,3 @@ export class TweetService {
       );
   }
 }
-export interface Tweet {
-  body_text: string;
-}
-

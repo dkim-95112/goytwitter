@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Tweet} from '../tweet.service';
+import {Tweet} from '../_models/tweet';
 
 @Component({
   selector: 'app-tweet-card',
