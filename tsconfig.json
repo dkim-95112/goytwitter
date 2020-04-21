@@ -16,6 +16,9 @@
       "dom"
     ]
   },
+  "files": [
+    "_files/*.ts"
+  ],
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true
