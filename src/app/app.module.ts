@@ -5,24 +5,28 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 // import { MatSliderModule } from '@angular/material/slider';
 import {MatCardModule} from '@angular/material/card';
 import {AppComponent} from './app.component';
+import { AppRoutingModule } from './app-routing.module';
 import {TweetCardComponent} from './tweet-card/tweet-card.component';
 import {TweetListComponent} from './tweet-list/tweet-list.component';
 // used to create fake backend
 import { FakeBackendInterceptor } from './_helpers';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './home';
+import { LoginComponent } from './login';
 @NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     MatCardModule,
-    HttpClientModule
+    HttpClientModule,
+    AppRoutingModule
   ],
   declarations: [
     AppComponent,
     TweetCardComponent,
     TweetListComponent,
-    HomeComponent
+    HomeComponent,
+    LoginComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

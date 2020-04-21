@@ -1,1 +1,12 @@
-<app-tweet-list></app-tweet-list>
+<!-- nav -->
+<nav *ngIf="currentUser">
+  <div>
+    <a routerLink="/">Home</a>
+    <a (click)="logout()">Logout</a>
+  </div>
+</nav>
+
+<!-- main app container -->
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
