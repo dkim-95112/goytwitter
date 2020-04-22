@@ -1,18 +1,90 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor, HttpResponse, HTTP_INTERCEPTORS
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Observable, of, throwError} from 'rxjs';
+import {User} from '../_models';
+import {delay, dematerialize, materialize, mergeMap} from 'rxjs/operators';
+
+const users: User[] = [{
+  id: 1, username: 'test', password: 'test', firstName: 'Test', lastName: 'User'
+}];
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
+  constructor() {
+  }
 
-  constructor() {}
+  intercept(request: HttpRequest<any>, next: HttpHandler):
+    Observable<HttpEvent<unknown>> {
+    const {url, method, headers, body} = request;
+    // wrap in delayed observable to simulate server api call
+    return of(null)
+      .pipe(mergeMap(handleRoute))
+      // call materialize and dematerialize to ensure delay even if an error is thrown
+      // (https://github.com/Reactive-Extensions/RxJS/issues/648)
+      .pipe(materialize())
+      .pipe(delay(500))
+      .pipe(dematerialize());
 
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    return next.handle(request);
+    // return next.handle(request);
+    function handleRoute() {
+      switch (true) {
+        case url.endsWith('/users/authenticate') && method === 'POST':
+          return authenticate();
+        case url.endsWith('/users') && method === 'GET':
+          return getUsers();
+        default:
+          // pass through any requests not handled above
+          return next.handle(request);
+      }
+    }
+
+    // route functions
+
+    function authenticate() {
+      const {username, password} = body;
+      const user = users.find(x => x.username === username && x.password === password);
+      if (!user) {
+        return throwError('Username or password is incorrect');
+      }
+      return ok({
+        id: user.id,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        token: 'fake-jwt-token'
+      });
+    }
+
+    function getUsers() {
+      if (!isLoggedIn()) {
+        return unauthorized();
+      }
+      return ok(users);
+    }
+
+    // helper functions
+
+    function ok(b = body) {
+      return of(new HttpResponse({status: 200, body: b}));
+    }
+    function unauthorized() {
+      return throwError({status: 401, error: {message: 'Unauthorised'}});
+    }
+
+    function isLoggedIn() {
+      return headers.get('Authorization') === 'Bearer fake-jwt-token';
+    }
   }
 }
+
+export const fakeBackendInterceptor = {
+  // use fake backend in place of Http service for backend-less development
+  provide: HTTP_INTERCEPTORS,
+  useClass: FakeBackendInterceptor,
+  multi: true
+};

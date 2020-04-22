@@ -10,7 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import {TweetCardComponent} from './tweet-card/tweet-card.component';
 import {TweetListComponent} from './tweet-list/tweet-list.component';
 // used to create fake backend
-import { FakeBackendInterceptor } from './_helpers';
+import { fakeBackendInterceptor } from './_helpers';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
@@ -43,7 +43,7 @@ import {MatButtonModule} from '@angular/material/button';
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 
     // provider used to create fake backend
-    FakeBackendInterceptor
+    fakeBackendInterceptor
   ],
   bootstrap: [AppComponent]
 })
