@@ -18,6 +18,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
+import {MatToolbarModule} from '@angular/material/toolbar';
 @NgModule({
   imports: [
     BrowserModule,
@@ -29,7 +30,8 @@ import {MatButtonModule} from '@angular/material/button';
     MatIconModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+     MatToolbarModule
   ],
   declarations: [
     AppComponent,
