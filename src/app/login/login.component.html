@@ -20,7 +20,6 @@
       <mat-error *ngIf="loginForm.controls.password.invalid">{{getPasswordErrorMessage()}}</mat-error>
     </mat-form-field>
     <button mat-button [disabled]="loading">
-      <span *ngIf="loading">Loading...</span>
       Login
     </button>
     <mat-error *ngIf="error" class="alert alert-danger mt-3 mb-0">

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthenticationService } from './_services';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
+import {AuthenticationService} from './_services';
 import {User} from './_models';
 
 @Component({
@@ -16,8 +16,9 @@ export class AppComponent {
     private router: Router,
     private authenticationService: AuthenticationService
   ) {
-    this.authenticationService.currentUser
-      .subscribe(x => this.currentUser = x);
+    this.authenticationService.currentUser.subscribe(
+      x => this.currentUser = x
+    );
   }
 
   logout() {

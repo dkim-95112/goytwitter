@@ -6,7 +6,8 @@
 
   <span>
     <div *ngIf="currentUser">
-    <button mat-button routerLink="/">Home</button>
+    <button mat-button class="home" routerLink="/"
+            routerLinkActive="disabled">Home</button>
     <button mat-button (click)="logout()">Logout</button>
     </div>
   </span>
