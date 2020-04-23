@@ -19,6 +19,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import { EnterTweetComponent } from './enter-tweet/enter-tweet.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -38,7 +39,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     TweetCardComponent,
     TweetListComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    EnterTweetComponent,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

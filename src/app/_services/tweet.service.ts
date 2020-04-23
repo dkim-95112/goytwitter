@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError} from 'rxjs/operators';
 import {throwError} from 'rxjs';
-import {Tweet} from '../_models';
+import {CreateTweetResponse, Tweet} from '../_models';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,7 @@ export class TweetService {
     private http: HttpClient
   ) {
   }
+
   private static handlerError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
@@ -28,6 +29,14 @@ export class TweetService {
     return throwError(
       'Something bad happened; please try again later.');
   }
+
+  create(bodyText: string) {
+    return this.http.post<CreateTweetResponse>(this.tweetUrl, bodyText)
+      .pipe(
+        catchError(TweetService.handlerError)
+      );
+  }
+
   getTweets() {
     return this.http.get<Tweet[]>(this.tweetUrl)
       .pipe(

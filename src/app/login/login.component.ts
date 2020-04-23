@@ -11,8 +11,8 @@ import {first} from 'rxjs/operators';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  loading = false;
-  // submitted = false;
+  isLoading = false;
+  isSubmitted = false;
   returnUrl: string;
   error = '';
 
@@ -44,14 +44,14 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    // this.submitted = true;
+    this.isSubmitted = true;
 
     // stop here if form is invalid
     if (this.loginForm.invalid) {
       return;
     }
 
-    this.loading = true;
+    this.isLoading = true;
     this.authenticationService.login(
       this.f.email.value, this.f.password.value
     )
@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
         },
         error => {
           this.error = error;
-          this.loading = false;
+          this.isLoading = false;
         });
   }
 
