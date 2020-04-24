@@ -31,7 +31,10 @@ export class TweetService {
   }
 
   create(bodyText: string) {
-    return this.http.post<CreateTweetResponse>(this.tweetUrl, bodyText)
+    const tweet: Tweet = {
+      body_text: bodyText
+    };
+    return this.http.post<CreateTweetResponse>(this.tweetUrl, tweet)
       .pipe(
         catchError(TweetService.handlerError)
       );
