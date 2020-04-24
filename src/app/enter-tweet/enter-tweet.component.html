@@ -1,10 +1,6 @@
 <form [formGroup]="tweetForm">
-  <mat-form-field class="example-full-width">
-    <mat-label>Leave a comment</mat-label>
-    <textarea matInput (keyup.enter)="onEnter()"
+    <input (keyup.enter)="onEnter()"
               formControlName="body_text"
-              placeholder="Ex. It makes me feel...">s
-    </textarea>
-    <mat-error *ngIf="error">{{error}}</mat-error>
-  </mat-form-field>
+              placeholder="Ex. It makes me feel..."/>
+    <span *ngIf="error">{{error}}</span>
 </form>
