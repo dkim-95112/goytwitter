@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
-import {AuthenticationService} from './_services';
+import {UserService} from './_services';
 import {User} from './_models';
 
 @Component({
@@ -14,15 +14,15 @@ export class AppComponent {
 
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService
+    private userService: UserService
   ) {
-    this.authenticationService.currentUser.subscribe(
+    this.userService.currentUserSubject.subscribe(
       x => this.currentUser = x
     );
   }
 
   logout() {
-    this.authenticationService.logout();
+    this.userService.logout();
     this.router.navigate(['/login']);
   }
 }

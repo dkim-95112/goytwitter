@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError} from 'rxjs/operators';
 import {throwError} from 'rxjs';
-import {CreateTweetResponse, Tweet} from '../_models';
+import {InsertedTweetsResponse, Tweet} from '../_models';
 import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
 
 @Injectable({
@@ -51,7 +51,7 @@ export class TweetService {
     const tweet: Tweet = {
       body_text: bodyText
     };
-    return this.http.post<CreateTweetResponse>(this.tweetUrl, tweet)
+    return this.http.post<InsertedTweetsResponse>(this.tweetUrl, tweet)
       .pipe(
         catchError(TweetService.handlerError)
       );

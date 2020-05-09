@@ -8,7 +8,7 @@ interface ObjectId {
   id: string;
 }
 
-export interface CreateTweetResponse {
+export interface InsertedTweetsResponse {
   // for now - https://mongodb.github.io/node-mongodb-native/3.6/api/Collection.html#~insertWriteOpRes
   insertedCount: number;
   ops: object[];

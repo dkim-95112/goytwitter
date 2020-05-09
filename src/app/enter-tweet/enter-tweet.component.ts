@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TweetService} from '../_services';
-import {CreateTweetResponse} from '../_models';
+import {InsertedTweetsResponse} from '../_models';
 
 @Component({
   selector: 'app-enter-tweet',
@@ -32,7 +32,7 @@ export class EnterTweetComponent implements OnInit {
   onEnter() {
     this.tweetService.create(
       this.f.body_text.value
-    ).subscribe((resp: CreateTweetResponse) => {
+    ).subscribe((resp: InsertedTweetsResponse) => {
       console.log(resp);
     });
   }

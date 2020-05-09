@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthenticationService} from '../_services';
 import {first} from 'rxjs/operators';
+import {UserService} from '../_services';
 
 @Component({
   selector: 'app-login',
@@ -20,10 +20,10 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService
+    private userService: UserService
   ) {
     // redirect to home if already logged in
-    if (this.authenticationService.currentUserValue) {
+    if (this.userService.currentUserValue) {
       this.router.navigate(['/']);
     }
   }
@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.isLoading = true;
-    this.authenticationService.login(
+    this.userService.login(
       this.f.email.value, this.f.password.value
     )
       .pipe(first())
