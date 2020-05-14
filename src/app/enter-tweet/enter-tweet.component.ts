@@ -30,10 +30,10 @@ export class EnterTweetComponent implements OnInit {
   }
 
   onEnter() {
-    this.tweetService.create(
+    this.tweetService.insertTweet$(
       this.f.body_text.value
     ).subscribe((resp: InsertedTweetsResponse) => {
-      console.log(resp);
+      console.log('On Enter response: %o', resp);
     });
   }
 }

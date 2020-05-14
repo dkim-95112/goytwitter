@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError} from 'rxjs/operators';
-import {throwError} from 'rxjs';
+import {BehaviorSubject, Observable, throwError} from 'rxjs';
 import {InsertedTweetsResponse, Tweet} from '../_models';
 import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
 
@@ -9,12 +9,21 @@ import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
   providedIn: 'root'
 })
 export class TweetService {
-  tweetUrl = 'http://localhost:3000/tweets'; // 'assets/tweets.json';
-  socket$: WebSocketSubject<unknown>;
+  private tweetUrl = 'http://localhost:3000/tweets'; // 'assets/tweets.json';
+  private getTweets$: Observable<Tweet[]>;
+  socket$: WebSocketSubject<unknown>; // For incoming mongo notifications
+  tweets$: BehaviorSubject<Tweet[]>;
 
   constructor(
     private http: HttpClient,
   ) {
+    this.getTweets$ = this.http.get<Tweet[]>(this.tweetUrl)
+      .pipe(
+        catchError(TweetService.handlerError)
+      );
+    this.tweets$ = new BehaviorSubject<Tweet[]>([]);
+    this.getTweets$.subscribe(this.tweets$);
+    // Using websocket to get push notifications from mongodb
     this.socket$ = webSocket('ws://localhost:3000');
     this.socket$.subscribe(
       msg => {
@@ -47,18 +56,12 @@ export class TweetService {
       'Something bad happened; please try again later.');
   }
 
-  create(bodyText: string) {
+  insertTweet$(bodyText: string) {
     const tweet: Tweet = {
       body_text: bodyText
     };
+    console.log('inserting tweet');
     return this.http.post<InsertedTweetsResponse>(this.tweetUrl, tweet)
-      .pipe(
-        catchError(TweetService.handlerError)
-      );
-  }
-
-  getTweets() {
-    return this.http.get<Tweet[]>(this.tweetUrl)
       .pipe(
         catchError(TweetService.handlerError)
       );

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TweetService} from '../_services';
 import {Tweet} from '../_models';
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-tweet-list',
@@ -8,15 +9,12 @@ import {Tweet} from '../_models';
   styleUrls: ['./tweet-list.component.less']
 })
 export class TweetListComponent implements OnInit {
-  tweets: Tweet[];
+  tweets$: BehaviorSubject<Tweet[]>;
 
   constructor(private tweetService: TweetService) {
   }
 
   ngOnInit(): void {
-    this.tweetService.getTweets()
-      .subscribe(x => {
-        this.tweets = x;
-      });
+    this.tweets$ = this.tweetService.tweets$;
   }
 }

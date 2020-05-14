@@ -2,7 +2,8 @@ import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {UserService} from './_services';
 import {User} from './_models';
-
+// Todo: todo
+// + Make component for filtering list
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
