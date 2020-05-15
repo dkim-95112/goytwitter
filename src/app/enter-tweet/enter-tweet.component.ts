@@ -32,8 +32,16 @@ export class EnterTweetComponent implements OnInit {
   onEnter() {
     this.tweetService.insertTweet$(
       this.f.body_text.value
-    ).subscribe((resp: InsertedTweetsResponse) => {
-      console.log('On Enter response: %o', resp);
-    });
+    ).subscribe(
+      (resp: InsertedTweetsResponse) => {
+        console.log('onEnter response: %o', resp);
+      },
+      err => {
+        console.log('onEnter error %o', err);
+      },
+      () => {
+        console.log('onEnter complete');
+      }
+    );
   }
 }

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError} from 'rxjs/operators';
-import {BehaviorSubject, Observable, throwError} from 'rxjs';
+import {throwError} from 'rxjs';
 import {InsertedTweetsResponse, Tweet} from '../_models';
 import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
 
@@ -10,37 +10,38 @@ import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
 })
 export class TweetService {
   private tweetUrl = 'http://localhost:3000/tweets'; // 'assets/tweets.json';
-  private getTweets$: Observable<Tweet[]>;
   socket$: WebSocketSubject<unknown>; // For incoming mongo notifications
-  tweets$: BehaviorSubject<Tweet[]>;
+  tweets: Tweet[];
 
   constructor(
     private http: HttpClient,
   ) {
-    this.getTweets$ = this.http.get<Tweet[]>(this.tweetUrl)
-      .pipe(
-        catchError(TweetService.handlerError)
+    this.http.get<Tweet[]>(this.tweetUrl)
+      .subscribe(
+        msg => {
+          console.log('http got tweets');
+          this.tweets = msg;
+        },
+        TweetService.handleError,
+        () => {
+          console.log('http get tweets complete');
+        }
       );
-    this.tweets$ = new BehaviorSubject<Tweet[]>([]);
-    this.getTweets$.subscribe(this.tweets$);
-    // Using websocket to get push notifications from mongodb
+    // Using websocket subject to broadcast mongodb changes (push-notifications)
     this.socket$ = webSocket('ws://localhost:3000');
     this.socket$.subscribe(
       msg => {
         // Called whenever there is a message from the server.
         console.log('socket message received: %o', msg);
       },
-      err => {
-        // Called if at any point WebSocket API signals some kind of error.
-        console.log(err);
-      },
+      TweetService.handleError,
       () => {
         console.log('complete'); // Called when connection is closed (for whatever reason).
       }
     );
   }
 
-  private static handlerError(error: HttpErrorResponse) {
+  private static handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error.message);
@@ -63,7 +64,7 @@ export class TweetService {
     console.log('inserting tweet');
     return this.http.post<InsertedTweetsResponse>(this.tweetUrl, tweet)
       .pipe(
-        catchError(TweetService.handlerError)
+        catchError(TweetService.handleError)
       );
   }
 }

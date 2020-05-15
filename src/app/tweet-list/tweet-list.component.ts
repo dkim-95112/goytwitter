@@ -9,12 +9,9 @@ import {BehaviorSubject} from 'rxjs';
   styleUrls: ['./tweet-list.component.less']
 })
 export class TweetListComponent implements OnInit {
-  tweets$: BehaviorSubject<Tweet[]>;
-
-  constructor(private tweetService: TweetService) {
+  constructor(public tweetService: TweetService) {
   }
 
   ngOnInit(): void {
-    this.tweets$ = this.tweetService.tweets$;
   }
 }
