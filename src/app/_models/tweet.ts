@@ -1,4 +1,5 @@
 export interface Tweet {
+  id: string;
   body_text: string;
 }
 

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TweetService} from '../_services';
+import {Tweet} from '../_models';
 
 @Component({
   selector: 'app-tweet-list',
@@ -7,9 +8,14 @@ import {TweetService} from '../_services';
   styleUrls: ['./tweet-list.component.less']
 })
 export class TweetListComponent implements OnInit {
-  constructor(public tweetService: TweetService) {
+  toots: Tweet[];
+  constructor(private tweetService: TweetService) {
   }
 
   ngOnInit(): void {
+    this.tweetService.getToots()
+      .subscribe((toots) => {
+        this.toots = toots;
+      });
   }
 }
