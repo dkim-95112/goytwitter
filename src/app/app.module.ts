@@ -20,6 +20,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { EnterTweetComponent } from './enter-tweet/enter-tweet.component';
+import {EnterTweetSearchComponent} from './enter-tweet-search/enter-tweet-search.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -41,6 +42,7 @@ import { EnterTweetComponent } from './enter-tweet/enter-tweet.component';
     HomeComponent,
     LoginComponent,
     EnterTweetComponent,
+    EnterTweetSearchComponent,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

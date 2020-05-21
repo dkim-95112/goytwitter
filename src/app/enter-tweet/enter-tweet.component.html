@@ -1,6 +1,8 @@
 <form [formGroup]="tweetForm">
-    <input (keyup.enter)="onEnter()"
-              formControlName="body_text"
-              placeholder="Ex. It makes me feel..."/>
-    <span *ngIf="error">{{error}}</span>
+  <input
+    formControlName="body_text"
+    placeholder="Ex. It makes me feel..."/>
+  <span *ngIf="error">{{error}}</span>
+  <button mat-button
+          (click)="onEnter()">Insert</button>
 </form>

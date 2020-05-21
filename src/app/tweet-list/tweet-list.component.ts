@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {TweetService} from '../_services';
-import {Tweet} from '../_models';
-import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-tweet-list',

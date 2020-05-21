@@ -9,7 +9,8 @@ import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
   providedIn: 'root'
 })
 export class TweetService {
-  private tweetUrl = 'http://localhost:3000/tweets'; // 'assets/tweets.json';
+  private tweetUrl = 'http://localhost:3001/tweets'; // 'assets/tweets.json';
+  private websocketUrl = 'ws://localhost:3001';
   socket$: WebSocketSubject<unknown>; // For incoming mongo notifications
   tweets: Tweet[];
 
@@ -28,7 +29,7 @@ export class TweetService {
         }
       );
     // Using websocket subject to broadcast mongodb changes (push-notifications)
-    this.socket$ = webSocket('ws://localhost:3000');
+    this.socket$ = webSocket(this.websocketUrl);
     this.socket$.subscribe(
       msg => {
         // Called whenever there is a message from the server.
