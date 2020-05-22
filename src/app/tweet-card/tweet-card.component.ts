@@ -22,9 +22,6 @@ export class TweetCardComponent implements OnInit {
 
   onDelete() {
     console.log('onDelete');
-    this.tweetService.delete(this.tweet.id)
-      .subscribe((v) => {
-        console.log('component deleting');
-      });
+    this.tweetService.delete(this.tweet.id);
   }
 }

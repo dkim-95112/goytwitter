@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
-import {throwError} from 'rxjs';
-import {InsertedTweetsResponse, Tweet} from '../_models';
+import {BehaviorSubject, Subject, throwError} from 'rxjs';
+import {Tweet} from '../_models';
 import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
 
 @Injectable({
@@ -11,11 +11,17 @@ import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
 export class TweetService {
   private tweetUrl = 'http://localhost:3001/tweets'; // 'assets/tweets.json';
   private websocketUrl = 'ws://localhost:3001';
-  socket$: WebSocketSubject<unknown>; // For incoming mongo notifications
+  private socket$: WebSocketSubject<unknown>; // For incoming mongo notifications
+  private toots: Tweet[];
+  toots$: Subject<Tweet[]>;
 
   constructor(
     private http: HttpClient,
   ) {
+    this.toots$ = new BehaviorSubject<Tweet[]>(
+      this.toots = []
+    );
+
     // Using websocket subject to broadcast mongodb changes (push-notifications)
     this.socket$ = webSocket(this.websocketUrl);
     this.socket$.subscribe(
@@ -29,6 +35,7 @@ export class TweetService {
       }
     );
   }
+
   private static handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
@@ -51,38 +58,69 @@ export class TweetService {
     return this.http.get<{
       message: string,
       docs: any[]
-    }>(this.tweetUrl)
-      .pipe(
-        catchError(TweetService.handleError),
-        map(v => {
-          return v.docs.map(d => {
-            return {
-              id: d._id,
-              body_text: d.body_text,
-            };
-          });
-        })
-      );
-  }
-  delete(id: string) {
-    console.log('service deleting');
-    return this.http.delete<InsertedTweetsResponse>(
-      this.tweetUrl + '/' + id
+    }>(
+      this.tweetUrl
     ).pipe(
-      catchError(TweetService.handleError)
+      catchError(TweetService.handleError),
+      map(v => {
+        return v.docs.map(d => {
+          return {
+            id: d._id,
+            body_text: d.body_text,
+          };
+        });
+      })
+    ).subscribe(
+      toots => {
+        this.toots$.next(
+          this.toots = toots
+        );
+      }
     );
   }
 
-  insertTweet$(bodyText: string) {
+  delete(id: string) {
+    console.log('service deleting');
+    return this.http.delete<{
+      message: string
+    }>(
+      this.tweetUrl + '/' + id
+    ).pipe(
+      catchError(TweetService.handleError)
+    ).subscribe(
+      resp => {
+        console.log('service deleted: %o', resp);
+        this.toots$.next(
+          this.toots = this.toots.filter(
+            (t) => t.id !== id
+          )
+        );
+      }
+    );
+  }
+
+  insert(bodyText: string) {
     const tweet: Tweet = {
       id: null,
       body_text: bodyText
     };
     console.log('service inserting');
-    return this.http.post<InsertedTweetsResponse>(
+    return this.http.post<{
+      message: string,
+      toot: any,
+    }>(
       this.tweetUrl, tweet
     ).pipe(
       catchError(TweetService.handleError)
+    ).subscribe(
+      resp => {
+        console.log('service inserted: %o', resp);
+        this.toots.push({
+          id: resp.toot._id,
+          body_text: resp.toot.body_text,
+        });
+        this.toots$.next(this.toots);
+      }
     );
   }
 }

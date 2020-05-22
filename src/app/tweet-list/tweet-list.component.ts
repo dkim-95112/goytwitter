@@ -8,14 +8,10 @@ import {Tweet} from '../_models';
   styleUrls: ['./tweet-list.component.less']
 })
 export class TweetListComponent implements OnInit {
-  toots: Tweet[];
-  constructor(private tweetService: TweetService) {
+  constructor(public tweetService: TweetService) {
   }
 
   ngOnInit(): void {
-    this.tweetService.getToots()
-      .subscribe((toots) => {
-        this.toots = toots;
-      });
+    this.tweetService.getToots();
   }
 }

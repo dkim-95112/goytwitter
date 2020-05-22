@@ -1,4 +1,6 @@
 <app-enter-tweet-search></app-enter-tweet-search>
-<div *ngFor="let tweet of toots">
-  <app-tweet-card [tweet]="tweet"></app-tweet-card>
+<div *ngFor="let tweet of tweetService.toots$ | async">
+  <app-tweet-card
+    [tweet]="tweet"
+  ></app-tweet-card>
 </div>
