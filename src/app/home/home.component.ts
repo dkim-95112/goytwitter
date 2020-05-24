@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {TweetService} from '../_services';
+import {Tweet} from '../_models';
 
 @Component({
   selector: 'app-home',
@@ -6,10 +8,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.less']
 })
 export class HomeComponent implements OnInit {
+  toots: Tweet[];
 
-  constructor() { }
+  constructor(private tweetService: TweetService) {
+  }
 
   ngOnInit(): void {
+    this.tweetService.fetchToots();
   }
 
 }

@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TweetService} from '../_services';
-import {InsertedTweetsResponse} from '../_models';
+import {Tweet} from '../_models';
 
 @Component({
   selector: 'app-enter-tweet',
@@ -9,29 +9,25 @@ import {InsertedTweetsResponse} from '../_models';
   styleUrls: ['./enter-tweet.component.less']
 })
 export class EnterTweetComponent implements OnInit {
-  tweetForm: FormGroup;
+  @Output() insert = new EventEmitter<Tweet>();
+  form: FormGroup;
   error = '';
 
   constructor(
-    private fb: FormBuilder,
+    private formBuilder: FormBuilder,
     private tweetService: TweetService
   ) {
   }
 
   ngOnInit(): void {
-    this.tweetForm = this.fb.group({
-      body_text: ['test', Validators.required]
+    this.form = this.formBuilder.group({
+      bodyText: ['test', Validators.required]
     });
-  }
-
-  // convenience getter for easy access to form fields
-  get f() {
-    return this.tweetForm.controls;
   }
 
   onEnter() {
     this.tweetService.insert(
-      this.f.body_text.value
+      this.form.get('bodyText').value
     );
   }
 }

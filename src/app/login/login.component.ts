@@ -1,7 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {first} from 'rxjs/operators';
+import {Router} from '@angular/router';
 import {UserService} from '../_services';
 
 @Component({
@@ -9,23 +8,19 @@ import {UserService} from '../_services';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.less']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   isLoading = false;
-  isSubmitted = false;
-  returnUrl: string;
-  error = '';
+  submitErrorMessage: string;
 
   constructor(
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
     private router: Router,
     private userService: UserService
   ) {
-    // redirect to home if already logged in
-    if (this.userService.currentUserValue) {
-      this.router.navigate(['/']);
-    }
+  }
+
+  ngOnDestroy() {
   }
 
   ngOnInit(): void {
@@ -33,50 +28,45 @@ export class LoginComponent implements OnInit {
       email: ['test', Validators.required],
       password: ['test', Validators.required]
     });
-
-    // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
-  }
-
-  // convenience getter for easy access to form fields
-  get f() {
-    return this.loginForm.controls;
   }
 
   onSubmit() {
-    this.isSubmitted = true;
-
-    // stop here if form is invalid
     if (this.loginForm.invalid) {
       return;
     }
-
     this.isLoading = true;
+    this.submitErrorMessage = '';
     this.userService.login(
-      this.f.email.value, this.f.password.value
-    )
-      .pipe(first())
-      .subscribe(
-        data => {
-          this.router.navigate([this.returnUrl]);
-        },
-        error => {
-          this.error = error;
-          this.isLoading = false;
-        });
+      this.loginForm.get('email').value,
+      this.loginForm.get('password').value,
+    ).subscribe(
+      resp => {
+        console.log('login comp: %o', resp);
+        this.router.navigate(['/']);
+      },
+      err => {
+        console.error('login comp: %o', err);
+        this.submitErrorMessage = err;
+        this.isLoading = false;
+      },
+      () => {
+        console.log('login comp complete');
+        this.isLoading = false;
+      }
+    );
   }
 
   getEmailErrorMessage() {
-    if (this.loginForm.controls.email.hasError('required')) {
+    if (this.loginForm.get('email')
+      .hasError('required')) {
       return 'You must enter a value';
     }
-
-    return this.loginForm.controls.email
+    return this.loginForm.get('email')
       .hasError('email') ? 'Not a valid email' : '';
   }
 
   getPasswordErrorMessage() {
-    if (this.loginForm.controls.password
+    if (this.loginForm.get('password')
       .hasError('required')) {
       return 'You must enter a value';
     }

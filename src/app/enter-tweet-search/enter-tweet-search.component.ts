@@ -8,13 +8,13 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 })
 
 export class EnterTweetSearchComponent implements OnInit {
-  searchForm: FormGroup;
+  form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
-    this.searchForm = this.fb.group({
+    this.form = this.formBuilder.group({
       filter: [''],
     });
   }

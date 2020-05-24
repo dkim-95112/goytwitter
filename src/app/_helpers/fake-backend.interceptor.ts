@@ -6,11 +6,16 @@ import {
   HttpInterceptor, HttpResponse, HTTP_INTERCEPTORS
 } from '@angular/common/http';
 import {Observable, of, throwError} from 'rxjs';
+import {
+  delay,
+  dematerialize,
+  materialize,
+  mergeMap
+} from 'rxjs/operators';
 import {User} from '../_models';
-import {delay, dematerialize, materialize, mergeMap} from 'rxjs/operators';
 
 const users: User[] = [{
-  id: 1, username: 'test', password: 'test', firstName: 'Test', lastName: 'User'
+  id: 'asdf', email: 'test', firstName: 'Test', lastName: 'User'
 }];
 
 @Injectable()
@@ -33,7 +38,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     // return next.handle(request);
     function handleRoute() {
       switch (true) {
-        case url.endsWith('/users/authenticate') && method === 'POST':
+        case url.endsWith('/users/login') && method === 'POST':
           return authenticate();
         case url.endsWith('/users') && method === 'GET':
           return getUsers();
@@ -46,14 +51,16 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     // route functions
 
     function authenticate() {
-      const {username, password} = body;
-      const user = users.find(x => x.username === username && x.password === password);
+      const {email, password} = body;
+      const user = users.find(x => {
+        return x.email === email;
+      });
       if (!user) {
         return throwError('Username or password is incorrect');
       }
       return ok({
         id: user.id,
-        username: user.username,
+        email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
         token: 'fake-jwt-token'
@@ -72,8 +79,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     function ok(b = body) {
       return of(new HttpResponse({status: 200, body: b}));
     }
+
     function unauthorized() {
-      return throwError({status: 401, error: {message: 'Unauthorised'}});
+      return throwError({
+        status: 401,
+        error: {message: 'Unauthorised'}
+      });
     }
 
     function isLoggedIn() {

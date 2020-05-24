@@ -1,25 +1,28 @@
 <mat-toolbar>
-  <span>Goy Twitter</span>
+  <span>
+    <a mat-button routerLink="/">Goy Twitter</a>
+  </span>
 
   <!-- This fills the remaining space of the current row -->
   <span class="example-fill-remaining-space"></span>
 
   <span>
-    <div *ngIf="currentUser">
-    <button mat-button class="home" routerLink="/"
-            routerLinkActive="disabled">Home</button>
-    <button mat-button (click)="logout()">Logout</button>
+    <div *ngIf="!isLoggedIn">
+      <a
+        mat-button
+        routerLink="/login"
+        routerLinkActive="disabled">Login</a>
+    <a
+      mat-button
+      routerLink="/signup"
+      routerLinkActive="disabled">Signup</a>
+    </div>
+    <div *ngIf="isLoggedIn">
+      <a mat-button (click)="logout()">Logout</a>
     </div>
   </span>
 </mat-toolbar>
-<!--<nav *ngIf="currentUser">
-  <div>
-    <a routerLink="/">Home</a>
-    <a (click)="logout()">Logout</a>
-  </div>
-</nav>-->
 
-<!-- main app container -->
 <main>
   <router-outlet></router-outlet>
 </main>

@@ -1,0 +1,48 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Signup</mat-card-title>
+  </mat-card-header>
+  <form
+    #signupForm="ngForm"
+    (submit)="onSubmit(signupForm)">
+    <mat-form-field appearance="outline">
+      <input
+        matInput
+        type="email"
+        name="email"
+        ngModel
+        #emailInput=ngModel
+        placeholder="Email"
+        required
+        email>
+      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      <mat-error *ngIf="emailInput.invalid">
+        Enter valid email.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <input
+        matInput
+        type="password"
+        name="password"
+        ngModel
+        #passwordInput="ngModel"
+        placeholder="Password"
+        required>
+      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      <mat-hint>Hint</mat-hint>
+      <mat-error *ngIf="passwordInput.invalid">
+        Enter valid password.
+      </mat-error>
+    </mat-form-field>
+    <button
+      mat-button
+      type="submit"
+      [disabled]="signupForm.invalid || isLoading"
+    >Signup
+    </button>
+    <mat-error *ngIf="submitErrorMessage">
+      {{submitErrorMessage}}
+    </mat-error>
+  </form>
+</mat-card>

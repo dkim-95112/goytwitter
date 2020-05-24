@@ -1,10 +1,10 @@
 {
   "docs": [
     {
-      "body_text": "hi there body_text"
+      "bodyText": "hi there bodyText"
     },
     {
-      "body_text": "hi there body_text222"
+      "bodyText": "hi there bodyText222"
     }
   ]
 }

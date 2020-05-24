@@ -1,8 +1,11 @@
-<form [formGroup]="tweetForm">
+<form [formGroup]="form">
   <input
-    formControlName="body_text"
+    formControlName="bodyText"
     placeholder="Ex. It makes me feel..."/>
   <span *ngIf="error">{{error}}</span>
-  <button mat-button
-          (click)="onEnter()">Insert</button>
+  <button
+    mat-button
+    (click)="onEnter()"
+  >Insert
+  </button>
 </form>

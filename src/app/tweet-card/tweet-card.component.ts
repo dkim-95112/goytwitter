@@ -1,4 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output
+} from '@angular/core';
 import {Tweet} from '../_models';
 import {TweetService} from '../_services';
 
@@ -7,13 +13,10 @@ import {TweetService} from '../_services';
   templateUrl: './tweet-card.component.html',
   styleUrls: ['./tweet-card.component.less']
 })
-export class TweetCardComponent implements OnInit {
-  @Input() tweet: Tweet;
+export class TweetCardComponent {
+  @Input() toot: Tweet;
 
   constructor(private tweetService: TweetService) {
-  }
-
-  ngOnInit(): void {
   }
 
   onEdit() {
@@ -22,6 +25,6 @@ export class TweetCardComponent implements OnInit {
 
   onDelete() {
     console.log('onDelete');
-    this.tweetService.delete(this.tweet.id);
+    this.tweetService.delete(this.toot.id);
   }
 }

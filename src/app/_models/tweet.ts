@@ -1,6 +1,6 @@
-export interface Tweet {
+export class Tweet {
   id: string;
-  body_text: string;
+  bodyText: string;
 }
 
 // for now https://mongodb.github.io/node-mongodb-native/3.6/api/ObjectID.html
