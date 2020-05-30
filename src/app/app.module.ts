@@ -20,8 +20,9 @@ import {TweetListComponent} from './tweet-list/tweet-list.component';
 import {EnterTweetComponent} from './enter-tweet/enter-tweet.component';
 import {EnterTweetSearchComponent} from './enter-tweet-search/enter-tweet-search.component';
 import {SignupComponent} from './signup/signup.component';
-import {fakeBackendInterceptor} from './_helpers';
+// import {fakeBackendInterceptor} from './_helpers';
 import {ErrorDialogComponent} from './error-dialog/error-dialog.component';
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
   imports: [
@@ -38,6 +39,7 @@ import {ErrorDialogComponent} from './error-dialog/error-dialog.component';
     MatButtonModule,
     MatToolbarModule,
     MatDialogModule,
+    MatTabsModule,
   ],
   declarations: [
     AppComponent,

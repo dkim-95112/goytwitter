@@ -5,6 +5,7 @@ import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
 import {Tweet} from '../_models';
 import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
 import {environment} from '@environments/environment';
+import {UserService} from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class TweetService implements OnDestroy {
   private tootUrl = `${environment.apiUrl}/toots`; // 'assets/tweets.json';
   private wsSubject: WebSocketSubject<{
     operationType: string;
+    userId: string,
     heartbeatDateIso?: string;
   }>; // For incoming mongo notifications
   private heartbeatTimeout: number;
@@ -57,6 +59,7 @@ export class TweetService implements OnDestroy {
 
   constructor(
     private http: HttpClient,
+    private userService: UserService,
   ) {
     this.tootsSubject = new BehaviorSubject<Tweet[]>([]);
 
@@ -181,12 +184,17 @@ export class TweetService implements OnDestroy {
     if (this.heartbeatTimeout) {
       clearTimeout(this.heartbeatTimeout);
     }
-    this.heartbeatTimeout = setTimeout(() => {
-      this.wsSubject.next({
-        operationType: 'heartbeat',
-        heartbeatDateIso: (new Date()).toISOString(),
-      });
-    }, 50 * 1000);
+    this.heartbeatTimeout = setTimeout(
+      () => {
+        this.wsSubject.next({
+          operationType: 'heartbeat',
+          userId: this.userService.userId,
+          heartbeatDateIso: (new Date()).toISOString(),
+        });
+      },
+      // Now using aws classic load balancer with 60 second ttl socket
+      50 * 1000,
+    );
   }
 
   // private static handleError(error: HttpErrorResponse) {

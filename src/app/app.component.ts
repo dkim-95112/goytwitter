@@ -26,7 +26,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.userLoginSub = this.userService.getLoginListenerObservable()
+    this.userLoginSub = this.userService.getLoginAsObservable()
       .subscribe(
         isLoggedIn => this.isLoggedIn = isLoggedIn
       );
@@ -46,6 +46,5 @@ export class AppComponent implements OnInit, OnDestroy {
 
   logout() {
     this.userService.logout();
-    this.router.navigate(['/login']);
   }
 }

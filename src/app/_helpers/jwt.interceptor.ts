@@ -15,9 +15,10 @@ export class JwtInterceptor implements HttpInterceptor {
   private currentUser: User;
 
   constructor(private userService: UserService) {
-    this.userService.getCurrentUserObservable().subscribe(
-      (u) => {
-        this.currentUser = u;
+    this.userService.getLoginAsObservable().subscribe(() => {
+        this.currentUser = JSON.parse(
+          localStorage.getItem('currentUser')
+        ) as User;
       }
     );
   }

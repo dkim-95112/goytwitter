@@ -1,21 +1,19 @@
-<mat-toolbar color="primary">
-  <span>
-    <a mat-button routerLink="/">Goy Toot</a>
-  </span>
+<mat-toolbar>
+  <h1>Goy Toot</h1>
 
   <span>
     <div *ngIf="!isLoggedIn">
-      <a
+      <button
         mat-stroked-button
         (click)="login()"
-      >Login</a>
-    <a
+      >Login</button>
+    <button
       mat-stroked-button
       (click)="signup()"
-    >Signup</a>
+    >Signup</button>
     </div>
     <div *ngIf="isLoggedIn">
-      <a mat-stroked-button (click)="logout()">Logout</a>
+      <button mat-stroked-button (click)="logout()">Logout</button>
     </div>
   </span>
 </mat-toolbar>
