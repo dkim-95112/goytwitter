@@ -1,96 +1,192 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {catchError, map} from 'rxjs/operators';
-import {BehaviorSubject, Subscription, throwError} from 'rxjs';
+import {catchError, map, tap} from 'rxjs/operators';
+import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
 import {Tweet} from '../_models';
 import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
-
-class MongoDelta {
-  clusterTime: string;
-  documentKey: { _id: string; };
-  fullDocument?: any;
-  ns: { db: string; coll: string; };
-  operationType: 'insert' | 'delete';
-  // clusterTime: "6830500169746743299"
-// documentKey: {_id: "5ecacb96ce029ed1ceaf9399"}
-// ns: {db: "test", coll: "toots"}
-// operationType: "delete"
-// _id: {_data: "825ECACFB7000000032B022C0100296E5A1004DB75985948AB…43CBFBA46645F696400645ECACB96CE029ED1CEAF93990004"}
-// __proto__: Object
-
-// clusterTime: "6830500526229028865"
-// documentKey: {_id: "5ecad0093ffe4cfaeffa9fe9"}
-// fullDocument: {_id: "5ecad0093ffe4cfaeffa9fe9", bodyText: "test", __v: 0}
-// ns: {db: "test", coll: "toots"}
-// operationType: "insert"
-}
+import {environment} from '@environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TweetService implements OnDestroy {
-  private tootUrl = 'http://localhost:3001/toots'; // 'assets/tweets.json';
-  private websocketUrl = 'ws://localhost:3001';
-  private socket$: WebSocketSubject<MongoDelta | unknown>; // For incoming mongo notifications
-  private webSocketSub: Subscription;
+  private tootUrl = `${environment.apiUrl}/toots`; // 'assets/tweets.json';
+  private wsSubject: WebSocketSubject<{
+    operationType: string;
+    heartbeatDateIso?: string;
+  }>; // For incoming mongo notifications
+  private heartbeatTimeout: number;
+  private wsInsertObservable: Observable<{
+    // Mongo watch insert
+    clusterTime: string; // "6830500526229028865"
+    documentKey: {
+      _id: string; // "5ecad0093ffe4cfaeffa9fe9"
+    };
+    fullDocument: {
+      _id: string; // "5ecad0093ffe4cfaeffa9fe9"
+      bodyText: string; // "test"
+    };
+    __v: number;
+    ns: {
+      db: string; // "test"
+      coll: string; // "toots"
+    };
+    operationType: 'insert';
+  }>;
+  private wsDeleteObservable: Observable<{
+    // Mongo watch delete
+    clusterTime: string; // "6830500169746743299"
+    documentKey: {
+      _id: string; // "5ecacb96ce029ed1ceaf9399"
+    }
+    ns: {
+      db: string; // "test",
+      coll: string; // "toots"
+    };
+    operationType: 'delete';
+    _id: {
+      _data: string; // "825ECACFB7000000032B022C0100296E5A1004DB75985948AB…43CBFBA46645F696400645ECACB96CE029ED1CEAF93990004"
+    };
+  }>;
+  private wsOtherObservable: Observable<any>;
+  private wsInsertSubscription: Subscription;
+  private wsDeleteSubscription: Subscription;
+  private wsOtherSubscription: Subscription;
   private toots: Tweet[];
-  private toots$: BehaviorSubject<Tweet[]>;
+  private tootsSubject: BehaviorSubject<Tweet[]>;
 
   constructor(
     private http: HttpClient,
   ) {
+    this.tootsSubject = new BehaviorSubject<Tweet[]>([]);
+
     // Broadcasting mongodb changes (push-notifications)
-    this.socket$ = webSocket(this.websocketUrl);
-    this.webSocketSub = this.socket$.subscribe(
-      msg => {
-        // Called whenever there is a message from the server.
-        console.log('socket received: %o', msg);
-        if (TweetService.isMongoDelta(msg)) {
-          console.log('got mongo delta');
-          switch (msg.operationType) {
-            case 'insert':
-              // For now, checking if exists
-              const idx = this.toots.findIndex(
-                t => t.id === msg.fullDocument._id
-              );
-              if (idx > -1) {
-                console.warn('Insert found existing');
-                this.toots.slice(idx, 1);
-              }
-              this.toots.push({
-                id: msg.fullDocument._id,
-                bodyText: msg.fullDocument.bodyText,
-              } as Tweet);
-              this.toots$.next(this.toots);
-              break;
-            case 'delete':
-              console.log('deleting');
-              this.toots$.next(
-                this.toots = this.toots.filter(
-                  t => t.id !== msg.documentKey._id
-                )
-              );
-              break;
-            default:
-              console.warn('Unknown operationType: %o', msg);
-              break;
-          }
+    this.wsSubject = webSocket({
+      url: environment.websocketUrl,
+      openObserver: {
+        next: (v) => {
+          console.log('websocket open next: %o', v);
+          this.resetHeartbeat();
+        },
+        error: (err) => {
+          console.error('websocket open: %o', err);
+        },
+        complete: () => {
+          console.log('websocket open complete');
         }
       },
-      err => {
-        console.error('websocket: %o', err);
+      closingObserver: {
+        next: (v) => {
+          console.log('websocket closing next');
+        },
+        error: (err) => {
+          console.error('websocket closing: %o', err);
+        },
+        complete: () => {
+          console.log('websocket closing complete');
+        }
       },
-      () => {
-        console.log('websocket complete'); // Called when connection is closed (for whatever reason).
+      closeObserver: {
+        next: (v) => {
+          console.log('websocket close next: %o', v);
+        },
+        error: (err) => {
+          console.error('websocket close error: %o', err);
+        },
+        complete: () => {
+          console.log('websocket close complete');
+        }
+      },
+    });
+    this.wsInsertObservable = this.wsSubject.multiplex(
+      () => ({subscribe: 'insert'}),
+      () => ({unsubscribe: 'insert'}),
+      msg => msg.operationType === 'insert'
+    );
+    this.wsDeleteObservable = this.wsSubject.multiplex(
+      () => ({subscribe: 'delete'}),
+      () => ({unsubscribe: 'delete'}),
+      msg => msg.operationType === 'delete'
+    );
+    this.wsOtherObservable = this.wsSubject.multiplex(
+      // When server gets this message, it will start sending messages for 'A'...
+      () => ({subscribe: 'other'}),
+      // ...and when gets this one, it will stop.
+      () => ({unsubscribe: 'other'}),
+      msg => {
+        // If the function returns `true` message is passed down the stream. Skipped if the function returns false.
+        return !msg.operationType ||
+          !['insert', 'delete'].includes(msg.operationType);
       }
     );
-    this.toots$ = new BehaviorSubject<Tweet[]>([]);
+    this.wsInsertSubscription = this.wsInsertObservable.subscribe(
+      msg => {
+        console.log('websocket insert received: %o', msg);
+        this.resetHeartbeat();
+        // For now, checking if exists
+        const idx = this.toots.findIndex(
+          t => t.id === msg.fullDocument._id
+        );
+        if (idx > -1) {
+          console.warn('Found existing, so deleting first');
+          this.toots.slice(idx, 1);
+        }
+        this.toots.push({
+          id: msg.fullDocument._id,
+          bodyText: msg.fullDocument.bodyText,
+        } as Tweet);
+        this.tootsSubject.next(this.toots);
+      },
+      err => {
+        console.error('websocket insert: %o', err);
+      },
+      () => {
+        console.log('websocket insert complete');
+      }
+    );
+    this.wsDeleteSubscription = this.wsDeleteObservable.subscribe(
+      msg => {
+        console.log('websocket delete received: %o', msg);
+        this.resetHeartbeat();
+        this.tootsSubject.next(
+          this.toots = this.toots.filter(
+            t => t.id !== msg.documentKey._id
+          )
+        );
+      },
+      err => {
+        console.error('websocket delete: %o', err);
+      },
+      () => {
+        console.log('websocket delete complete');
+      }
+    );
+
+    this.wsOtherSubscription = this.wsOtherObservable.subscribe(
+      msg => {
+        // Called whenever there is a message from the server.
+        console.log('websocket other received: %o', msg);
+        this.resetHeartbeat();
+      },
+      err => {
+        console.error('websocket other: %o', err);
+      },
+      () => {
+        console.log('websocket other complete');
+      }
+    );
   }
 
-  private static isMongoDelta(x: any): x is MongoDelta {
-    return 'documentKey' in x &&
-      'ns' in x &&
-      'operationType' in x;
+  private resetHeartbeat() {
+    if (this.heartbeatTimeout) {
+      clearTimeout(this.heartbeatTimeout);
+    }
+    this.heartbeatTimeout = setTimeout(() => {
+      this.wsSubject.next({
+        operationType: 'heartbeat',
+        heartbeatDateIso: (new Date()).toISOString(),
+      });
+    }, 50 * 1000);
   }
 
   // private static handleError(error: HttpErrorResponse) {
@@ -112,20 +208,28 @@ export class TweetService implements OnDestroy {
   // }
 
   ngOnDestroy() {
-    this.webSocketSub.unsubscribe();
+    if (this.heartbeatTimeout) {
+      clearTimeout(this.heartbeatTimeout);
+    }
+    this.wsInsertSubscription.unsubscribe();
+    this.wsDeleteSubscription.unsubscribe();
+    this.wsOtherSubscription.unsubscribe();
+    this.wsSubject.complete();
   }
 
   getTootsObservable() {
-    return this.toots$.asObservable();
+    return this.tootsSubject.asObservable();
   }
 
   fetchToots() {
+    console.log('toot svc fetching');
     return this.http.get<{
       message: string,
       docs: any[]
     }>(
       this.tootUrl
     ).pipe(
+      tap(() => console.log('fetched toots')),
       map(v => {
         return v.docs.map(d => {
           return {
@@ -136,8 +240,7 @@ export class TweetService implements OnDestroy {
       })
     ).subscribe(
       toots => {
-        console.log('fetched toots');
-        this.toots$.next(
+        this.tootsSubject.next(
           this.toots = toots
         );
       },
@@ -151,15 +254,15 @@ export class TweetService implements OnDestroy {
   }
 
   delete(tootId: string) {
-    console.log('deleting toot svc');
+    console.log('toot svc deleting');
     return this.http.delete<{
       message: string
     }>(
       this.tootUrl + '/' + tootId
     ).subscribe(
       resp => {
-        console.log('deleted toot svc: %o', resp);
-        // this.toots$.next(
+        console.log('delete toot svc received: %o', resp);
+        // this.tootsSubject.next(
         //   this.toots = this.toots.filter(
         //     t => t.id !== tootId
         //   )
@@ -188,7 +291,7 @@ export class TweetService implements OnDestroy {
       }
     ).pipe(
       map(resp => {
-        console.log('toot svc: %o', resp);
+        console.log('insert toot svc received: %o', resp);
         return {
           bodyText: resp.doc.bodyText,
           id: resp.doc._id,
@@ -196,9 +299,9 @@ export class TweetService implements OnDestroy {
       })
     ).subscribe(
       toot => {
-        console.log('inserted toot svc: %o', toot);
+        // console.log('inserted toot svc: %o', toot);
         // this.toots.push(toot);
-        // this.toots$.next(this.toots);
+        // this.tootsSubject.next(this.toots);
       },
       err => {
         console.error('insert toot svc: %o', err);

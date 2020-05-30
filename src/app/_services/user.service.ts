@@ -16,11 +16,11 @@ export class UserService {
   constructor(
     private http: HttpClient,
   ) {
-    this.loginListener$ = new BehaviorSubject<boolean>(
-      this.isLoggedInPrivate = false
-    );
     this.currentUser$ = new BehaviorSubject<User>(
       JSON.parse(localStorage.getItem('currentUser'))
+    );
+    this.loginListener$ = new BehaviorSubject<boolean>(
+      this.isLoggedInPrivate = false
     );
   }
 

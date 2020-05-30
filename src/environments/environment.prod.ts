@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://meangoy-env.eba-uzgtmjfv.us-east-2.elasticbeanstalk.com/'
+  apiUrl: 'https://awseb-AWSEB-9PJXIW26F2DY-1525272243.us-east-1.elb.amazonaws.com/api',
+  websocketUrl: 'wss:awseb-AWSEB-9PJXIW26F2DY-1525272243.us-east-1.elb.amazonaws.com',
 };

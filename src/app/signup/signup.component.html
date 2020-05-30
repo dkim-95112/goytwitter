@@ -1,7 +1,4 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Signup</mat-card-title>
-  </mat-card-header>
+<mat-dialog-content>
   <form
     #signupForm="ngForm"
     (submit)="onSubmit(signupForm)">
@@ -12,10 +9,11 @@
         name="email"
         ngModel
         #emailInput=ngModel
-        placeholder="Email"
+        placeholder="foo@bar.com"
         required
         email>
       <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      <mat-hint>Eg. foo@bar.com</mat-hint>
       <mat-error *ngIf="emailInput.invalid">
         Enter valid email.
       </mat-error>
@@ -30,19 +28,19 @@
         placeholder="Password"
         required>
       <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-      <mat-hint>Hint</mat-hint>
       <mat-error *ngIf="passwordInput.invalid">
         Enter valid password.
       </mat-error>
     </mat-form-field>
-    <button
-      mat-button
-      type="submit"
-      [disabled]="signupForm.invalid || isLoading"
-    >Signup
-    </button>
-    <mat-error *ngIf="submitErrorMessage">
-      {{submitErrorMessage}}
-    </mat-error>
   </form>
-</mat-card>
+  <mat-error *ngIf="submitErrorMessage">
+    {{submitErrorMessage}}
+  </mat-error>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button
+    mat-button type="submit"
+    [disabled]="signupForm.invalid || isLoading"
+  >Signup
+  </button>
+</mat-dialog-actions>

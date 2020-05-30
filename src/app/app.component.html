@@ -1,24 +1,21 @@
-<mat-toolbar>
+<mat-toolbar color="primary">
   <span>
-    <a mat-button routerLink="/">Goy Twitter</a>
+    <a mat-button routerLink="/">Goy Toot</a>
   </span>
-
-  <!-- This fills the remaining space of the current row -->
-  <span class="example-fill-remaining-space"></span>
 
   <span>
     <div *ngIf="!isLoggedIn">
       <a
-        mat-button
-        routerLink="/login"
-        routerLinkActive="disabled">Login</a>
+        mat-stroked-button
+        (click)="login()"
+      >Login</a>
     <a
-      mat-button
-      routerLink="/signup"
-      routerLinkActive="disabled">Signup</a>
+      mat-stroked-button
+      (click)="signup()"
+    >Signup</a>
     </div>
     <div *ngIf="isLoggedIn">
-      <a mat-button (click)="logout()">Logout</a>
+      <a mat-stroked-button (click)="logout()">Logout</a>
     </div>
   </span>
 </mat-toolbar>

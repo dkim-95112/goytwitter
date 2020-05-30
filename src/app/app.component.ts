@@ -2,6 +2,10 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {UserService} from './_services';
 import {Subscription} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {LoginComponent} from './login/login.component';
+import {SignupComponent} from './signup/signup.component';
+
 // Todo: todo
 // + Make component for filtering list
 @Component({
@@ -16,7 +20,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    public userService: UserService
+    private userService: UserService,
+    private dialog: MatDialog,
   ) {
   }
 
@@ -29,6 +34,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.userLoginSub.unsubscribe();
+  }
+
+  signup() {
+    this.dialog.open(SignupComponent);
+  }
+
+  login() {
+    this.dialog.open(LoginComponent);
   }
 
   logout() {

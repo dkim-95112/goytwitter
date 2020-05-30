@@ -5,7 +5,8 @@ import {UserService} from '../_services';
 
 @Component({
   selector: 'app-signup',
-  templateUrl: 'signup.component.html'
+  templateUrl: 'signup.component.html',
+  styleUrls: ['signup.component.less'],
 })
 export class SignupComponent {
   submitErrorMessage: string;
