@@ -15,10 +15,10 @@ import {HomeComponent} from './home';
 import {LoginComponent} from './login';
 import {JwtInterceptor, ErrorInterceptor} from './_helpers';
 import {AppRoutingModule} from './app-routing.module';
-import {TweetCardComponent} from './tweet-card/tweet-card.component';
-import {TweetListComponent} from './tweet-list/tweet-list.component';
-import {EnterTweetComponent} from './enter-tweet/enter-tweet.component';
-import {EnterTweetSearchComponent} from './enter-tweet-search/enter-tweet-search.component';
+import {TootCardComponent} from './toot-card/toot-card.component';
+import {TootListComponent} from './toot-list/toot-list.component';
+import {EnterTootComponent} from './enter-toot/enter-toot.component';
+import {EnterTootSearchComponent} from './enter-toot-search/enter-toot-search.component';
 import {SignupComponent} from './signup/signup.component';
 // import {fakeBackendInterceptor} from './_helpers';
 import {ErrorDialogComponent} from './error-dialog/error-dialog.component';
@@ -43,13 +43,13 @@ import {MatTabsModule} from '@angular/material/tabs';
   ],
   declarations: [
     AppComponent,
-    TweetCardComponent,
-    TweetListComponent,
+    TootCardComponent,
+    TootListComponent,
     HomeComponent,
     LoginComponent,
     SignupComponent,
-    EnterTweetComponent,
-    EnterTweetSearchComponent,
+    EnterTootComponent,
+    EnterTootSearchComponent,
     ErrorDialogComponent,
   ],
   providers: [

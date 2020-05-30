@@ -1,2 +1,2 @@
-﻿export * from './tweet';
+﻿export * from './toot';
 export * from './user';

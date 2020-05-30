@@ -2,7 +2,7 @@ import {Injectable, OnDestroy} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError, map, tap} from 'rxjs/operators';
 import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
-import {Tweet} from '../_models';
+import {Toot} from '../_models';
 import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
 import {environment} from '@environments/environment';
 import {UserService} from './user.service';
@@ -10,8 +10,8 @@ import {UserService} from './user.service';
 @Injectable({
   providedIn: 'root'
 })
-export class TweetService implements OnDestroy {
-  private tootUrl = `${environment.apiUrl}/toots`; // 'assets/tweets.json';
+export class TootService implements OnDestroy {
+  private tootUrl = `${environment.apiUrl}/toots`; // 'assets/toots.json';
   private wsSubject: WebSocketSubject<{
     operationType: string;
     userId: string,
@@ -54,14 +54,14 @@ export class TweetService implements OnDestroy {
   private wsInsertSubscription: Subscription;
   private wsDeleteSubscription: Subscription;
   private wsOtherSubscription: Subscription;
-  private toots: Tweet[];
-  private tootsSubject: BehaviorSubject<Tweet[]>;
+  private toots: Toot[];
+  private tootsSubject: BehaviorSubject<Toot[]>;
 
   constructor(
     private http: HttpClient,
     private userService: UserService,
   ) {
-    this.tootsSubject = new BehaviorSubject<Tweet[]>([]);
+    this.tootsSubject = new BehaviorSubject<Toot[]>([]);
 
     // Broadcasting mongodb changes (push-notifications)
     this.wsSubject = webSocket({
@@ -137,7 +137,7 @@ export class TweetService implements OnDestroy {
         this.toots.push({
           id: msg.fullDocument._id,
           bodyText: msg.fullDocument.bodyText,
-        } as Tweet);
+        } as Toot);
         this.tootsSubject.next(this.toots);
       },
       err => {
@@ -243,7 +243,7 @@ export class TweetService implements OnDestroy {
           return {
             id: d._id,
             bodyText: d.bodyText,
-          } as Tweet;
+          } as Toot;
         });
       })
     ).subscribe(
@@ -303,7 +303,7 @@ export class TweetService implements OnDestroy {
         return {
           bodyText: resp.doc.bodyText,
           id: resp.doc._id,
-        } as Tweet;
+        } as Toot;
       })
     ).subscribe(
       toot => {

@@ -1,21 +1,21 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {TweetService} from '../_services';
-import {Tweet} from '../_models';
+import {TootService} from '../_services';
+import {Toot} from '../_models';
 
 @Component({
-  selector: 'app-enter-tweet',
-  templateUrl: './enter-tweet.component.html',
-  styleUrls: ['./enter-tweet.component.less']
+  selector: 'app-enter-toot',
+  templateUrl: './enter-toot.component.html',
+  styleUrls: ['./enter-toot.component.less']
 })
-export class EnterTweetComponent implements OnInit {
-  @Output() insert = new EventEmitter<Tweet>();
+export class EnterTootComponent implements OnInit {
+  @Output() insert = new EventEmitter<Toot>();
   form: FormGroup;
   error = '';
 
   constructor(
     private formBuilder: FormBuilder,
-    private tweetService: TweetService
+    private tootService: TootService
   ) {
   }
 
@@ -26,7 +26,7 @@ export class EnterTweetComponent implements OnInit {
   }
 
   onEnter() {
-    this.tweetService.insert(
+    this.tootService.insert(
       this.form.get('bodyText').value
     );
   }

@@ -2,12 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
 @Component({
-  selector: 'app-enter-tweet-search',
-  templateUrl: './enter-tweet-search.component.html',
+  selector: 'app-enter-toot-search',
+  templateUrl: './enter-toot-search.component.html',
   styles: [],
 })
 
-export class EnterTweetSearchComponent implements OnInit {
+export class EnterTootSearchComponent implements OnInit {
   form: FormGroup;
 
   constructor(private formBuilder: FormBuilder) {

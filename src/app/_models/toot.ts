@@ -1,4 +1,4 @@
-export class Tweet {
+export class Toot {
   id: string;
   bodyText: string;
 }
@@ -9,7 +9,7 @@ interface ObjectId {
   id: string;
 }
 
-export interface InsertedTweetsResponse {
+export interface InsertedTootsResponse {
   // for now - https://mongodb.github.io/node-mongodb-native/3.6/api/Collection.html#~insertWriteOpRes
   insertedCount: number;
   ops: object[];
