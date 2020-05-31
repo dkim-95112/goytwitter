@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {NgForm} from '@angular/forms';
 import {UserService} from '../_services';
+import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-signup',
@@ -9,10 +10,11 @@ import {UserService} from '../_services';
   styleUrls: ['signup.component.less'],
 })
 export class SignupComponent {
-  submitErrorMessage: string;
+  submitErrorMessages: string[];
   isLoading: boolean;
 
   constructor(
+    private dialogRef: MatDialogRef<SignupComponent>,
     private userService: UserService,
     private router: Router,
   ) {
@@ -20,19 +22,27 @@ export class SignupComponent {
 
   onSubmit(signupForm: NgForm) {
     console.log('onSubmit: %o', signupForm);
-    this.submitErrorMessage = '';
+    this.submitErrorMessages = [];
     this.isLoading = true;
     this.userService.signup(
+      signupForm.value.displayName,
       signupForm.value.email,
       signupForm.value.password,
     ).subscribe(
       resp => {
         console.log('onSubmit %o', resp);
-        this.router.navigate(['/login']);
+        switch (resp.status) {
+          case 'Success':
+            this.dialogRef.close({
+              status: 'Success'
+            });
+            break;
+          case 'Failure':
+            this.submitErrorMessages = resp.messages;
+        }
       },
       err => {
         console.error('onSubmit %o', err);
-        this.submitErrorMessage = err;
         this.isLoading = false;
       },
       () => {

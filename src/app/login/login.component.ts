@@ -4,7 +4,6 @@ import {Router} from '@angular/router';
 import {UserService} from '../_services';
 
 @Component({
-  selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.less']
 })
@@ -25,6 +24,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
+      displayName: ['wanderer', Validators.required],
       email: ['asdf@asdf', Validators.required],
       password: ['asdf', Validators.required]
     });

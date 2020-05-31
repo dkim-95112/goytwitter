@@ -1,6 +1,5 @@
 <mat-toolbar>
   <h1>Goy Toot</h1>
-
   <span>
     <div *ngIf="!isLoggedIn">
       <button
@@ -13,7 +12,10 @@
     >Signup</button>
     </div>
     <div *ngIf="isLoggedIn">
-      <button mat-stroked-button (click)="logout()">Logout</button>
+      <button
+        mat-stroked-button
+        (click)="logout()"
+      >Logout "{{displayName}}"</button>
     </div>
   </span>
 </mat-toolbar>

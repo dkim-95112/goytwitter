@@ -15,9 +15,7 @@ export class UserService {
   constructor(
     private http: HttpClient,
   ) {
-    const currentUser = JSON.parse(
-      localStorage.getItem('currentUser')
-    ) as User;
+    const currentUser = this.currentUser;
     this.login$ = new BehaviorSubject<boolean>(
       this.isLoggedInPrivate = currentUser &&
         currentUser.token &&
@@ -25,31 +23,45 @@ export class UserService {
     );
   }
 
+  get currentUser(): User {
+    return JSON.parse(
+      localStorage.getItem('currentUser')
+    ) as User;
+  }
+
   get isLoggedIn() {
     return this.isLoggedInPrivate;
   }
 
   get userId() {
-    const currentUser = JSON.parse(
-      localStorage.getItem('currentUser')
-    ) as User;
+    const currentUser = this.currentUser;
     return currentUser && currentUser.id;
+  }
+
+  get displayName() {
+    const currentUser = this.currentUser;
+    return currentUser && currentUser.displayName;
   }
 
   getLoginAsObservable() {
     return this.login$.asObservable();
   }
 
-  signup(email: string, password: string) {
+  signup(
+    displayName: string,
+    email: string,
+    password: string
+  ) {
     console.log('signup user svc');
     return this.http.post<{
-      message: string,
-      result: {
+      status: 'Success' | 'Failure',
+      messages: string[],
+      result?: {
         _id: string,
       }
     }>(
       `${environment.apiUrl}/users/signup`,
-      {email, password},
+      {displayName, email, password},
     ).pipe(
       catchError((err: HttpErrorResponse) => {
         throw Error('signup svc: ' + err.error.message);
@@ -98,9 +110,9 @@ export class UserService {
 
   logout() {
     console.log('User svc logout');
+    localStorage.removeItem('currentUser');
     this.login$.next(
       this.isLoggedInPrivate = false
     );
-    localStorage.removeItem('currentUser');
   }
 }

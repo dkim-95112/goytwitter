@@ -192,8 +192,8 @@ export class TootService implements OnDestroy {
           heartbeatDateIso: (new Date()).toISOString(),
         });
       },
-      // Now using aws classic load balancer with 60 second ttl socket
-      50 * 1000,
+      // Assuming AWS load balancer socket with 36000 second ttl
+      3600 * 1000,
     );
   }
 

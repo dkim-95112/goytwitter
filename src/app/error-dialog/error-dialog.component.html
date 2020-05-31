@@ -1,8 +1,13 @@
 <h1 mat-dialog-title>An Error Occurred!</h1>
 <div mat-dialog-content>
-  <p class="mat-body-1">
-    {{ data?.messages[data?.messages.length-1] }}</p>
+  <p
+    class="mat-body-1"
+    *ngFor="let msg of data.messages; index as i">
+    {{i + ') ' +msg}}
+  </p>
 </div>
 <div mat-dialog-actions>
-  <button mat-button mat-dialog-close>Okay</button>
+  <button
+    mat-stroked-button
+    mat-dialog-close>Okay</button>
 </div>

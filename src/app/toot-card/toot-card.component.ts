@@ -1,12 +1,10 @@
 import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output
+  Component, Input,
 } from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
 import {Toot} from '../_models';
 import {TootService} from '../_services';
+import {DeleteDialogComponent} from '../delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-toot-card',
@@ -16,15 +14,17 @@ import {TootService} from '../_services';
 export class TootCardComponent {
   @Input() toot: Toot;
 
-  constructor(private tootService: TootService) {
-  }
-
-  onEdit() {
-    console.log('onEdit');
+  constructor(
+    private tootService: TootService,
+    private dialog: MatDialog,
+  ) {
   }
 
   onDelete() {
-    console.log('onDelete');
-    this.tootService.delete(this.toot.id);
+    this.dialog.open(DeleteDialogComponent, {
+      data: {
+        tootId: this.toot.id
+      }
+    });
   }
 }

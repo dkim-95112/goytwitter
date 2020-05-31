@@ -16,6 +16,7 @@ import {SignupComponent} from './signup/signup.component';
 export class AppComponent implements OnInit, OnDestroy {
   userLoginSub: Subscription;
   isLoggedIn: boolean;
+  displayName: string;
   title = 'tooter';
 
   constructor(
@@ -28,7 +29,11 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userLoginSub = this.userService.getLoginAsObservable()
       .subscribe(
-        isLoggedIn => this.isLoggedIn = isLoggedIn
+        isLoggedIn => {
+          this.isLoggedIn = isLoggedIn;
+          this.displayName = this.isLoggedIn ?
+            this.userService.displayName : '';
+        }
       );
   }
 
@@ -37,7 +42,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   signup() {
-    this.dialog.open(SignupComponent);
+    this.dialog.open(SignupComponent)
+      .afterClosed().subscribe(result => {
+      if (result && result.status === 'Success') {
+        // Automatically open login dialog
+        this.login();
+      }
+    });
   }
 
   login() {

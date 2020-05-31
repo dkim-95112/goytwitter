@@ -22,7 +22,7 @@ import {EnterTootSearchComponent} from './enter-toot-search/enter-toot-search.co
 import {SignupComponent} from './signup/signup.component';
 // import {fakeBackendInterceptor} from './_helpers';
 import {ErrorDialogComponent} from './error-dialog/error-dialog.component';
-import {MatTabsModule} from '@angular/material/tabs';
+import {DeleteDialogComponent} from './delete-dialog/delete-dialog.component';
 
 @NgModule({
   imports: [
@@ -39,7 +39,6 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatButtonModule,
     MatToolbarModule,
     MatDialogModule,
-    MatTabsModule,
   ],
   declarations: [
     AppComponent,
@@ -51,6 +50,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     EnterTootComponent,
     EnterTootSearchComponent,
     ErrorDialogComponent,
+    DeleteDialogComponent,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
