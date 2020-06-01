@@ -1,5 +1,8 @@
-<h1 mat-dialog-title>Delete Toot ?</h1>
+<h1 mat-dialog-title>Remove Toot ?</h1>
 <mat-dialog-content>
+  <mat-error *ngFor="let msg of submitErrorMessages">
+    {{msg}}
+  </mat-error>
 </mat-dialog-content>
 
 <mat-dialog-actions>
@@ -7,8 +10,8 @@
     mat-stroked-button mat-dialog-close
   >Cancel</button>
   <button
-    mat-stroked-button mat-dialog-close
+    mat-stroked-button
     (click)="onDelete()"
-  >Delete
+  >Remove
   </button>
 </mat-dialog-actions>

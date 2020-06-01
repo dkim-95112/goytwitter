@@ -5,6 +5,7 @@
   <span *ngIf="error">{{error}}</span>
   <button
     mat-stroked-button
+    [disabled]="!isLoggedIn"
     (click)="onEnter()"
   >Toot
   </button>

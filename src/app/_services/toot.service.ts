@@ -193,7 +193,7 @@ export class TootService implements OnDestroy {
         });
       },
       // Assuming AWS load balancer socket with 36000 second ttl
-      3600 * 1000,
+      55 * 1000,
     );
   }
 
@@ -264,24 +264,10 @@ export class TootService implements OnDestroy {
   delete(tootId: string) {
     console.log('toot svc deleting');
     return this.http.delete<{
-      message: string
+      status: 'Success' | 'Failure',
+      messages?: string[],
     }>(
       this.tootUrl + '/' + tootId
-    ).subscribe(
-      resp => {
-        console.log('delete toot svc received: %o', resp);
-        // this.tootsSubject.next(
-        //   this.toots = this.toots.filter(
-        //     t => t.id !== tootId
-        //   )
-        // );
-      },
-      err => {
-        console.error('delete toot svc: %o', err);
-      },
-      () => {
-        console.log('delete toot svc complete');
-      }
     );
   }
 

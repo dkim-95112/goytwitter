@@ -1,10 +1,10 @@
-<mat-card class="example-card">
+<mat-card [ngStyle]="{opacity: isDeleting ? 0.5 : 1}">
   <mat-card-content>
     <p>
       {{toot.bodyText}}
     </p>
   </mat-card-content>
-  <button
+  <button *ngIf="isLoggedIn"
     mat-stroked-button
     (click)="onDelete()"
   >Remove

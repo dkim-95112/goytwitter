@@ -72,11 +72,13 @@ export class UserService {
   login(email: string, password: string) {
     console.log('login user svc');
     return this.http.post<{
-      userId: string,
-      email: string,
-      displayName: string,
-      token: string,
-      expiresInSeconds: number,
+      status: 'Success' | 'Failure',
+      messages?: string[],
+      userId?: string,
+      email?: string,
+      displayName?: string,
+      token?: string,
+      expiresInSeconds?: number,
     }>(
       `${environment.apiUrl}/users/login`,
       {email, password}
@@ -87,23 +89,31 @@ export class UserService {
       }),
       map((resp) => {
         console.log('login user svc: %o', resp);
-        // store user details and jwt token in local storage
-        const user = {
-          id: resp.userId,
-          email: resp.email,
-          displayName: resp.displayName,
-          token: resp.token,
-          tokenExpiryISO: (new Date(
-            (new Date()).getTime() + resp.expiresInSeconds * 1000
-          )).toISOString(),
-        } as User;
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        this.login$.next(
-          this.isLoggedInPrivate = true
-        );
-        return {
-          message: 'Success'
-        };
+        switch (resp.status) {
+          case 'Failure':
+            return {
+              status: 'Failure',
+              messages: resp.messages,
+            };
+          case 'Success':
+            // store user details and jwt token in local storage
+            const user = {
+              id: resp.userId,
+              email: resp.email,
+              displayName: resp.displayName,
+              token: resp.token,
+              tokenExpiryISO: (new Date(
+                (new Date()).getTime() + resp.expiresInSeconds * 1000
+              )).toISOString(),
+            } as User;
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            this.login$.next(
+              this.isLoggedInPrivate = true
+            );
+            return {
+              status: 'Success',
+            };
+        }
       })
     );
   }

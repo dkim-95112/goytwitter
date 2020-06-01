@@ -6,7 +6,6 @@
         matInput
         formControlName="email"
         placeholder="foo@bar.com">
-      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
       <mat-hint>Example: foo@bar.com</mat-hint>
       <mat-error
         *ngIf="loginForm.get('email').invalid">
@@ -18,7 +17,6 @@
         matInput
         formControlName="password"
         placeholder="Password">
-      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
       <mat-error
         *ngIf="loginForm.get('password').invalid">
         {{getPasswordErrorMessage()}}</mat-error>
@@ -32,7 +30,6 @@
 <mat-dialog-actions>
   <button
     mat-stroked-button
-    mat-dialog-close
     (click)="onSubmit()"
     [disabled]="isLoading"
   >Login
