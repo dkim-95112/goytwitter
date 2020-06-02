@@ -1,7 +1,9 @@
+import {environment} from '@environments/environment';
 import {Injectable} from '@angular/core';
+import Debug from 'debug';
+const debug = Debug('app:user:svc');
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs';
-import {environment} from '@environments/environment';
 import {User} from '../_models';
 import {catchError, map} from 'rxjs/operators';
 
@@ -52,7 +54,7 @@ export class UserService {
     email: string,
     password: string
   ) {
-    console.log('signup user svc');
+    debug('Signup');
     return this.http.post<{
       status: 'Success' | 'Failure',
       messages: string[],
@@ -70,7 +72,7 @@ export class UserService {
   }
 
   login(email: string, password: string) {
-    console.log('login user svc');
+    debug('Login');
     return this.http.post<{
       status: 'Success' | 'Failure',
       messages?: string[],
@@ -84,11 +86,11 @@ export class UserService {
       {email, password}
     ).pipe(
       catchError((err: HttpErrorResponse) => {
-        console.error('login user svc: %o', err);
-        throw new Error('login user svc: ' + err.error.message);
+        console.error('user:svc:login error: %o', err);
+        throw new Error('user:svc:login error ' + err.error.message);
       }),
       map((resp) => {
-        console.log('login user svc: %o', resp);
+        debug('Login received: %o', resp);
         switch (resp.status) {
           case 'Failure':
             return {
@@ -119,7 +121,7 @@ export class UserService {
   }
 
   logout() {
-    console.log('User svc logout');
+    debug('Logout');
     localStorage.removeItem('currentUser');
     this.login$.next(
       this.isLoggedInPrivate = false

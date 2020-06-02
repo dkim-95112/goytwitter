@@ -33,6 +33,6 @@ export class EnterTootComponent implements OnInit {
   onEnter() {
     this.tootService.insert(
       this.form.get('bodyText').value
-    );
+    ).subscribe();
   }
 }
