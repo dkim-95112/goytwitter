@@ -21,14 +21,22 @@ export class UserService {
     this.login$ = new BehaviorSubject<boolean>(
       this.isLoggedInPrivate = currentUser &&
         currentUser.token &&
-        new Date(currentUser.tokenExpiryISO) > new Date()
+        currentUser.tokenExpiry > new Date()
     );
   }
 
   get currentUser(): User {
-    return JSON.parse(
+    const u = JSON.parse(
       localStorage.getItem('currentUser')
-    ) as User;
+    );
+    return {
+      id: u.id,
+      email: u.email,
+      displayName: u.displayName,
+      createDate: new Date(u.createDate),
+      token: u.token,
+      tokenExpiry: new Date(u.tokenExpiry),
+    } as User;
   }
 
   get isLoggedIn() {
@@ -79,6 +87,7 @@ export class UserService {
       userId?: string,
       email?: string,
       displayName?: string,
+      createDate?: string,
       token?: string,
       expiresInSeconds?: number,
     }>(
@@ -103,12 +112,22 @@ export class UserService {
               id: resp.userId,
               email: resp.email,
               displayName: resp.displayName,
+              createDate: new Date(resp.createDate),
               token: resp.token,
               tokenExpiryISO: (new Date(
                 (new Date()).getTime() + resp.expiresInSeconds * 1000
               )).toISOString(),
             } as User;
-            localStorage.setItem('currentUser', JSON.stringify(user));
+            localStorage.setItem('currentUser', JSON.stringify({
+              id: resp.userId,
+              email: resp.email,
+              displayName: resp.displayName,
+              createDate: resp.createDate,
+              token: resp.token,
+              tokenExpiry: (new Date(
+                (new Date()).getTime() + resp.expiresInSeconds * 1000
+              )).toISOString(),
+            }));
             this.login$.next(
               this.isLoggedInPrivate = true
             );

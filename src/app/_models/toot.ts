@@ -1,6 +1,9 @@
 export class Toot {
   id: string;
   bodyText: string;
+  creator: string;
+  createDate: Date;
+  displayName: string;
 }
 
 // for now https://mongodb.github.io/node-mongodb-native/3.6/api/ObjectID.html

@@ -2,6 +2,7 @@
     id: string;
     email: string;
     displayName: string;
+    createDate: Date;
     token?: string;
-    tokenExpiryISO?: string;
+    tokenExpiry?: Date;
 }
