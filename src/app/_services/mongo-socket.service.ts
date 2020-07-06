@@ -54,10 +54,12 @@ export class MongoSocketService {
   constructor() {
     // Broadcasting mongodb changes (push-notifications)
     this.webSocket = new WebSocket(this.websocketUrl);
-    this.webSocket.addEventListener('open', (ev) => {
+    this.webSocket.addEventListener(
+      'open', (ev) => {
       debug('onopen: %o', ev);
     });
-    this.webSocket.addEventListener('message', (ev) => {
+    this.webSocket.addEventListener(
+      'message', (ev) => {
       debug('message: %o', ev.data);
       const msg = JSON.parse(ev.data) as
         MongoInsertResponse | MongoDeleteResponse;
@@ -70,16 +72,19 @@ export class MongoSocketService {
             this.deleteSubject.next(msg as MongoDeleteResponse);
             break;
           default:
+            error('handler not implemented yet: %o', msg)
             this.otherSubject.next(msg);
         }
       } else {
         this.otherSubject.next(msg);
       }
     });
-    this.webSocket.addEventListener('close', (ev) => {
+    this.webSocket.addEventListener(
+      'close', (ev) => {
       debug('close: %o', ev);
     });
-    this.webSocket.addEventListener('error', (ev) => {
+    this.webSocket.addEventListener(
+      'error', (ev) => {
       error('error: %o', ev);
     });
   }

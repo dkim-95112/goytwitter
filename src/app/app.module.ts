@@ -10,6 +10,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatDrawer, MatSidenavModule} from "@angular/material/sidenav";
 import {AppComponent} from './app.component';
 import {HomeComponent} from './home';
 import {LoginComponent} from './login';
@@ -23,6 +24,8 @@ import {SignupComponent} from './signup/signup.component';
 // import {fakeBackendInterceptor} from './_helpers';
 import {ErrorDialogComponent} from './error-dialog/error-dialog.component';
 import {DeleteDialogComponent} from './delete-dialog/delete-dialog.component';
+import {LoginSidenavComponent} from './login-sidenav/login-sidenav.component';
+import {ToolbarComponent} from "./toolbar/toolbar.component";
 
 @NgModule({
   imports: [
@@ -39,6 +42,7 @@ import {DeleteDialogComponent} from './delete-dialog/delete-dialog.component';
     MatButtonModule,
     MatToolbarModule,
     MatDialogModule,
+    MatSidenavModule,
   ],
   declarations: [
     AppComponent,
@@ -51,8 +55,13 @@ import {DeleteDialogComponent} from './delete-dialog/delete-dialog.component';
     EnterTootSearchComponent,
     ErrorDialogComponent,
     DeleteDialogComponent,
+    LoginSidenavComponent,
+    ToolbarComponent,
   ],
   providers: [
+    {
+      provide: MatDrawer,
+    },
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
   ],

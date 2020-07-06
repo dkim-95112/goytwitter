@@ -1,25 +1,12 @@
-<mat-toolbar>
-  <h1>Goy Toot</h1>
-  <span>
-    <div *ngIf="!isLoggedIn">
-      <button
-        mat-stroked-button
-        (click)="login()"
-      >Login</button>
-    <button
-      mat-stroked-button
-      (click)="signup()"
-    >Signup</button>
-    </div>
-    <div *ngIf="isLoggedIn">
-      <button
-        mat-stroked-button
-        (click)="logout()"
-      >Logout "{{displayName}}"</button>
-    </div>
-  </span>
-</mat-toolbar>
+<app-toolbar
+  (openDrawer)="openDrawer()"
+></app-toolbar>
 
-<main>
-  <router-outlet></router-outlet>
-</main>
+<mat-drawer-container>
+  <mat-drawer #myDrawer>
+    <p>my sidenav</p>
+  </mat-drawer>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+</mat-drawer-container>

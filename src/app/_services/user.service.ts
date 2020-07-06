@@ -11,7 +11,7 @@ import {catchError, map} from 'rxjs/operators';
   providedIn: 'root'
 })
 export class UserService {
-  private isLoggedInPrivate: boolean;
+  private _isLoggedIn: boolean;
   private login$: BehaviorSubject<boolean>;
 
   constructor(
@@ -19,7 +19,7 @@ export class UserService {
   ) {
     const currentUser = this.currentUser;
     this.login$ = new BehaviorSubject<boolean>(
-      this.isLoggedInPrivate = currentUser &&
+      this._isLoggedIn = currentUser &&
         currentUser.token &&
         currentUser.tokenExpiry > new Date()
     );
@@ -29,7 +29,7 @@ export class UserService {
     const u = JSON.parse(
       localStorage.getItem('currentUser')
     );
-    return {
+    return u && {
       id: u.id,
       email: u.email,
       displayName: u.displayName,
@@ -40,7 +40,7 @@ export class UserService {
   }
 
   get isLoggedIn() {
-    return this.isLoggedInPrivate;
+    return this._isLoggedIn;
   }
 
   get userId() {
@@ -129,7 +129,7 @@ export class UserService {
               )).toISOString(),
             }));
             this.login$.next(
-              this.isLoggedInPrivate = true
+              this._isLoggedIn = true
             );
             return {
               status: 'Success',
@@ -143,7 +143,7 @@ export class UserService {
     debug('Logout');
     localStorage.removeItem('currentUser');
     this.login$.next(
-      this.isLoggedInPrivate = false
+      this._isLoggedIn = false
     );
   }
 }

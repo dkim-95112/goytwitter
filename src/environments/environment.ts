@@ -7,8 +7,8 @@ export const environment = {
   debug: 'app:*', // for npm debug module
   apiUrl: 'http://localhost:3001/api',
   websocketUrl: 'ws://localhost:3001/api',
-//   apiUrl: 'http://east-1-app-lb.goytoot.com/api',
-//   websocketUrl: 'ws://east-1-app-lb.goytoot.com',
+  // apiUrl: 'http://east-1-app-lb.goytoot.com/api',
+  // websocketUrl: 'ws://east-1-app-lb.goytoot.com',
   // apiUrl: 'https://awseb-AWSEB-9PJXIW26F2DY-1525272243.us-east-1.elb.amazonaws.com/api',
   // websocketUrl: 'wss:awseb-AWSEB-9PJXIW26F2DY-1525272243.us-east-1.elb.amazonaws.com',
 //   apiUrl: 'https://awseb-e-x-awsebloa-1mvomxpnq6ska-35021143.us-east-2.elb.amazonaws.com/api',
