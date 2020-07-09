@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
-import {Router} from '@angular/router';
 import {NgForm} from '@angular/forms';
 import {UserService} from '../_services';
-import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-signup',
@@ -14,9 +12,7 @@ export class SignupComponent {
   isLoading: boolean;
 
   constructor(
-    private dialogRef: MatDialogRef<SignupComponent>,
     private userService: UserService,
-    private router: Router,
   ) {
   }
 
@@ -33,9 +29,9 @@ export class SignupComponent {
         console.log('onSubmit %o', resp);
         switch (resp.status) {
           case 'Success':
-            this.dialogRef.close({
-              status: 'Success'
-            });
+            // this.dialogRef.close({
+            //   status: 'Success'
+            // });
             break;
           case 'Failure':
             this.submitErrorMessages = resp.messages;

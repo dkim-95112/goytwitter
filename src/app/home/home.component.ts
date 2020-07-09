@@ -5,7 +5,7 @@ import {Toot} from '../_models';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.less']
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
   toots: Toot[];

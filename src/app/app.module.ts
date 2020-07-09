@@ -24,8 +24,8 @@ import {SignupComponent} from './signup/signup.component';
 // import {fakeBackendInterceptor} from './_helpers';
 import {ErrorDialogComponent} from './error-dialog/error-dialog.component';
 import {DeleteDialogComponent} from './delete-dialog/delete-dialog.component';
-import {LoginSidenavComponent} from './login-sidenav/login-sidenav.component';
 import {ToolbarComponent} from "./toolbar/toolbar.component";
+import {MatTabsModule} from "@angular/material/tabs";
 
 @NgModule({
   imports: [
@@ -43,6 +43,7 @@ import {ToolbarComponent} from "./toolbar/toolbar.component";
     MatToolbarModule,
     MatDialogModule,
     MatSidenavModule,
+    MatTabsModule,
   ],
   declarations: [
     AppComponent,
@@ -55,7 +56,6 @@ import {ToolbarComponent} from "./toolbar/toolbar.component";
     EnterTootSearchComponent,
     ErrorDialogComponent,
     DeleteDialogComponent,
-    LoginSidenavComponent,
     ToolbarComponent,
   ],
   providers: [

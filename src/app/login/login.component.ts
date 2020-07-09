@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../_services';
-import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
+  selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.less']
 })
@@ -15,7 +15,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private dialogRef: MatDialogRef<LoginComponent>,
   ) {
   }
 
@@ -44,7 +43,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         console.log('login comp: %o', resp);
         switch(resp.status){
           case 'Success':
-            this.dialogRef.close();
+            // this.dialogRef.close();
             break;
           case 'Failure':
             this.submitErrorMessage = resp.messages.pop();

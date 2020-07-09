@@ -1,11 +1,19 @@
 <app-toolbar
-  (openDrawer)="openDrawer()"
+  (onSelectTab)="onSelectTab($event)"
 ></app-toolbar>
 
 <mat-drawer-container>
   <mat-drawer #myDrawer>
-    <p>my sidenav</p>
+    <mat-tab-group #myTabs>
+      <mat-tab label="Login">
+        <app-login></app-login>
+      </mat-tab>
+      <mat-tab label="Signup">
+        <app-signup></app-signup>
+      </mat-tab>
+    </mat-tab-group>
   </mat-drawer>
+
   <main>
     <router-outlet></router-outlet>
   </main>

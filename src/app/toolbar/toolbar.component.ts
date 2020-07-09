@@ -11,7 +11,7 @@ import {Subscription} from "rxjs";
   styleUrls: ['./toolbar.component.less'],
 })
 export class ToolbarComponent implements OnInit, OnDestroy {
-  @Output() openDrawer = new EventEmitter<any>();
+  @Output() onSelectTab = new EventEmitter<'login' | 'signup'>();
   userLoginSub: Subscription;
   isLoggedIn: boolean;
   displayName: string;
@@ -35,8 +35,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     this.userLoginSub.unsubscribe();
   }
 
-  signup() {
-    this.openDrawer.emit(null);
+  login() {
+    this.onSelectTab.emit('login');
     // this.dialog.open(SignupComponent)
     //   .afterClosed().subscribe(result => {
     //   if (result && result.status === 'Success') {
@@ -45,12 +45,9 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     //   }
     // });
   }
-
-  login() {
-    this.openDrawer.emit(null);
-    // this.dialog.open(LoginComponent);
+  signup(){
+    this.onSelectTab.emit('signup')
   }
-
   logout() {
     this.userService.logout();
   }
