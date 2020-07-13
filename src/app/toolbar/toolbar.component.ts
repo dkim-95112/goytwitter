@@ -21,6 +21,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     private userService: UserService,
   ) {
   }
+
   ngOnInit() {
     this.userLoginSub = this.userService.getLoginAsObservable()
       .subscribe(
@@ -31,24 +32,38 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         }
       );
   }
+
   ngOnDestroy() {
     this.userLoginSub.unsubscribe();
   }
 
   login() {
     this.onSelectTab.emit('login');
-    // this.dialog.open(SignupComponent)
-    //   .afterClosed().subscribe(result => {
-    //   if (result && result.status === 'Success') {
-    //     // Automatically open login dialog
-    //     this.login();
-    //   }
-    // });
   }
-  signup(){
+
+  signup() {
     this.onSelectTab.emit('signup')
   }
+
   logout() {
-    this.userService.logout();
+    this.userService.logout().subscribe();
+  }
+
+  onGetSession() { // For debugging
+    this.userService.getSession().subscribe(result => {
+      console.log('get session: ', result)
+    });
+  }
+
+  onPostSession() { // For debugging
+    this.userService.postSession().subscribe(result => {
+      console.log('post session: ', result)
+    });
+  }
+
+  onDeleteSession() { // For debugging
+    this.userService.deleteSession().subscribe(result => {
+      console.log('delete session: ', result)
+    })
   }
 }

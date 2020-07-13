@@ -1,6 +1,7 @@
 import {environment} from '@environments/environment';
 import {Injectable} from '@angular/core';
 import Debug from 'debug';
+
 const debug = Debug('app:user:svc');
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs';
@@ -34,8 +35,6 @@ export class UserService {
       email: u.email,
       displayName: u.displayName,
       createDate: new Date(u.createDate),
-      token: u.token,
-      tokenExpiry: new Date(u.tokenExpiry),
     } as User;
   }
 
@@ -55,6 +54,47 @@ export class UserService {
 
   getLoginAsObservable() {
     return this.login$.asObservable();
+  }
+
+  getSession() {
+    return this.http.get(
+      `${environment.apiUrl}/users/session`,{
+        withCredentials: true,
+      }
+    )
+  }
+
+  postSession() {
+    return this.http.post(
+      `${environment.apiUrl}/users/session`,
+      {},
+      {
+        withCredentials: true,
+      }
+    )
+  }
+
+  deleteSession() {
+    return this.http.delete(
+      `${environment.apiUrl}/users/session`,
+      {
+        withCredentials: true,
+      }
+    )
+  }
+
+  forgotPassword() {
+    debug('Forgot password');
+    return this.http.post<{
+      status: 'Success' | 'Failure',
+    }>(
+      `${environment.apiUrl}/users/sendmail`,
+      {type: 'forgot-password'},
+    ).pipe(
+      catchError((err: HttpErrorResponse) => {
+        throw Error('Send Mail: forgot-password' + err.error.message)
+      })
+    );
   }
 
   signup(
@@ -88,11 +128,12 @@ export class UserService {
       email?: string,
       displayName?: string,
       createDate?: string,
-      token?: string,
-      expiresInSeconds?: number,
     }>(
       `${environment.apiUrl}/users/login`,
-      {email, password}
+      {email, password},
+      {
+        withCredentials: true,
+      }
     ).pipe(
       catchError((err: HttpErrorResponse) => {
         console.error('user:svc:login error: %o', err);
@@ -108,25 +149,11 @@ export class UserService {
             };
           case 'Success':
             // store user details and jwt token in local storage
-            const user = {
-              id: resp.userId,
-              email: resp.email,
-              displayName: resp.displayName,
-              createDate: new Date(resp.createDate),
-              token: resp.token,
-              tokenExpiryISO: (new Date(
-                (new Date()).getTime() + resp.expiresInSeconds * 1000
-              )).toISOString(),
-            } as User;
             localStorage.setItem('currentUser', JSON.stringify({
               id: resp.userId,
               email: resp.email,
               displayName: resp.displayName,
               createDate: resp.createDate,
-              token: resp.token,
-              tokenExpiry: (new Date(
-                (new Date()).getTime() + resp.expiresInSeconds * 1000
-              )).toISOString(),
             }));
             this.login$.next(
               this._isLoggedIn = true
@@ -141,9 +168,13 @@ export class UserService {
 
   logout() {
     debug('Logout');
-    localStorage.removeItem('currentUser');
-    this.login$.next(
-      this._isLoggedIn = false
-    );
+    return this.deleteSession().pipe(
+      map(value => {
+        localStorage.removeItem('currentUser');
+        this.login$.next(
+          this._isLoggedIn = false
+        );
+      })
+    )
   }
 }

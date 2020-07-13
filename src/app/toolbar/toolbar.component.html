@@ -1,7 +1,7 @@
 <mat-toolbar>
   <h1>Goy Toot</h1>
   <span>
-    <div *ngIf="!isLoggedIn">
+    <span *ngIf="!isLoggedIn">
       <button
         mat-stroked-button
         (click)="login()"
@@ -10,12 +10,24 @@
       mat-stroked-button
       (click)="signup()"
     >Signup</button>
-    </div>
-    <div *ngIf="isLoggedIn">
+    </span>
+    <span *ngIf="isLoggedIn">
       <button
         mat-stroked-button
         (click)="logout()"
       >Logout "{{displayName}}"</button>
-    </div>
+    </span>
+    <button
+      mat-stroked-button
+      (click)="onGetSession()"
+    >Get Session</button>
+    <button
+      mat-stroked-button
+      (click)="onPostSession()"
+    >Post session</button>
+    <button
+      mat-stroked-button
+      (click)="onDeleteSession()"
+    >Delete session</button>
   </span>
 </mat-toolbar>

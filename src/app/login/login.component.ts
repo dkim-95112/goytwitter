@@ -29,6 +29,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
+  onForgotPassword() {
+    this.userService.forgotPassword().subscribe(result => {
+      debugger
+    });
+  }
+
   onSubmit() {
     if (this.loginForm.invalid) {
       return;
@@ -41,7 +47,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     ).subscribe(
       resp => {
         console.log('login comp: %o', resp);
-        switch(resp.status){
+        switch (resp.status) {
           case 'Success':
             // this.dialogRef.close();
             break;

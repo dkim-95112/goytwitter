@@ -126,7 +126,10 @@ export class TootService implements OnDestroy {
       status: 'Success' | 'Failure',
       messages?: string[],
     }>(
-      this.tootUrl + '/' + tootId
+      this.tootUrl + '/' + tootId,
+      {
+        withCredentials: true,
+      }
     );
   }
 
@@ -144,6 +147,8 @@ export class TootService implements OnDestroy {
     }>(
       this.tootUrl, {
         bodyText
+      }, {
+        withCredentials: true,
       }
     ).pipe(
       map(resp => {

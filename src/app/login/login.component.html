@@ -6,7 +6,6 @@
         matInput
         formControlName="email"
         placeholder="foo@bar.com">
-      <mat-hint>Example: foo@bar.com</mat-hint>
       <mat-error
         *ngIf="loginForm.get('email').invalid">
         {{getEmailErrorMessage()}}</mat-error>
@@ -32,6 +31,9 @@
     mat-stroked-button
     (click)="onSubmit()"
     [disabled]="isLoading"
-  >Login
-  </button>
+  >Login</button>
+  <button
+    mat-stroked-button
+    (click)="onForgotPassword()"
+  >Forgot Password</button>
 </mat-dialog-actions>
