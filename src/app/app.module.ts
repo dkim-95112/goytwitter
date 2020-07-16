@@ -26,6 +26,7 @@ import {ErrorDialogComponent} from './error-dialog/error-dialog.component';
 import {DeleteDialogComponent} from './delete-dialog/delete-dialog.component';
 import {ToolbarComponent} from "./toolbar/toolbar.component";
 import {MatTabsModule} from "@angular/material/tabs";
+import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 
 @NgModule({
   imports: [
@@ -47,16 +48,17 @@ import {MatTabsModule} from "@angular/material/tabs";
   ],
   declarations: [
     AppComponent,
-    TootCardComponent,
-    TootListComponent,
-    HomeComponent,
-    LoginComponent,
-    SignupComponent,
+    DeleteDialogComponent,
     EnterTootComponent,
     EnterTootSearchComponent,
     ErrorDialogComponent,
-    DeleteDialogComponent,
+    HomeComponent,
+    LoginComponent,
+    ResetPasswordComponent,
+    SignupComponent,
     ToolbarComponent,
+    TootCardComponent,
+    TootListComponent,
   ],
   providers: [
     {

@@ -1,6 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {MatDrawer} from "@angular/material/sidenav";
-import {MatTab, MatTabGroup} from "@angular/material/tabs";
+import {MatTabGroup} from "@angular/material/tabs";
 
 // Todo: todo
 // + Make component for filtering list

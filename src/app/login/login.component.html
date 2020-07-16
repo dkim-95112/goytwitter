@@ -1,39 +1,38 @@
-<mat-dialog-content>
-  <form [formGroup]="loginForm">
-    <mat-form-field appearance="outline">
-      <mat-label>Email</mat-label>
-      <input
-        matInput
-        formControlName="email"
-        placeholder="foo@bar.com">
-      <mat-error
-        *ngIf="loginForm.get('email').invalid">
-        {{getEmailErrorMessage()}}</mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Password</mat-label>
-      <input
-        matInput
-        formControlName="password"
-        placeholder="Password">
-      <mat-error
-        *ngIf="loginForm.get('password').invalid">
-        {{getPasswordErrorMessage()}}</mat-error>
-    </mat-form-field>
-  </form>
-  <mat-error *ngIf="submitErrorMessage">
-    {{submitErrorMessage}}
-  </mat-error>
-</mat-dialog-content>
-
-<mat-dialog-actions>
-  <button
+<form [formGroup]="loginForm">
+  <mat-form-field appearance="outline">
+    <mat-label>Email</mat-label>
+    <input
+      matInput
+      formControlName="email"
+      placeholder="foo@bar.com">
+    <mat-error
+      *ngIf="loginForm.get('email').invalid">
+      {{getEmailErrorMessage()}}</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Password</mat-label>
+    <input
+      matInput
+      formControlName="password"
+      placeholder="Password">
+    <mat-error
+      *ngIf="loginForm.get('password').invalid">
+      {{getPasswordErrorMessage()}}</mat-error>
+  </mat-form-field>
+</form>
+<mat-error *ngIf="submitErrorMessage">
+  {{submitErrorMessage}}
+</mat-error>
+<div>
+ <button
     mat-stroked-button
     (click)="onSubmit()"
     [disabled]="isLoading"
-  >Login</button>
+  >Login
+  </button>
   <button
     mat-stroked-button
-    (click)="onForgotPassword()"
-  >Forgot Password</button>
-</mat-dialog-actions>
+    (click)="onSendResetPasswordEmail()"
+  >Send Reset Password email
+  </button>
+</div>

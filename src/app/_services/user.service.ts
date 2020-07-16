@@ -83,16 +83,18 @@ export class UserService {
     )
   }
 
-  forgotPassword() {
-    debug('Forgot password');
+  sendResetPasswordEmail(email) {
+    debug('Send reset password email');
     return this.http.post<{
       status: 'Success' | 'Failure',
     }>(
-      `${environment.apiUrl}/users/sendmail`,
-      {type: 'forgot-password'},
+      `${environment.apiUrl}/users/sendmail/resetpassword`,
+      {
+        email,
+      },
     ).pipe(
       catchError((err: HttpErrorResponse) => {
-        throw Error('Send Mail: forgot-password' + err.error.message)
+        throw Error('Send Mail: reset-password' + err.error.message)
       })
     );
   }

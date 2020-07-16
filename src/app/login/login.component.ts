@@ -29,8 +29,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
-  onForgotPassword() {
-    this.userService.forgotPassword().subscribe(result => {
+  onSendResetPasswordEmail() {
+    this.userService.sendResetPasswordEmail(
+      this.loginForm.get('email').value
+    ).subscribe(result => {
       debugger
     });
   }
