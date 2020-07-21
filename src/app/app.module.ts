@@ -62,8 +62,9 @@ import {ResetPasswordComponent} from "./reset-password/reset-password.component"
   ],
   providers: [
     {
-      provide: MatDrawer,
-    },
+    provide: MatDrawer,
+    useValue: undefined // From upgrading ng cli 9 to 10
+},
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
   ],
