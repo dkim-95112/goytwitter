@@ -27,6 +27,7 @@ import {DeleteDialogComponent} from './delete-dialog/delete-dialog.component';
 import {ToolbarComponent} from "./toolbar/toolbar.component";
 import {MatTabsModule} from "@angular/material/tabs";
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
   imports: [
@@ -36,6 +37,7 @@ import {ResetPasswordComponent} from "./reset-password/reset-password.component"
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
     MatCardModule,
     MatFormFieldModule,
     MatIconModule,

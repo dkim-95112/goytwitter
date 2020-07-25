@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {UserService} from '../_services';
 
@@ -8,6 +8,7 @@ import {UserService} from '../_services';
   styleUrls: ['signup.component.less'],
 })
 export class SignupComponent {
+  @Output() onCloseDrawer = new EventEmitter<null>();
   submitErrorMessages: string[];
   isLoading: boolean;
 

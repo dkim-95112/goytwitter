@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../_services';
 
@@ -8,6 +8,7 @@ import {UserService} from '../_services';
   styleUrls: ['./login.component.less']
 })
 export class LoginComponent implements OnInit, OnDestroy {
+  @Output() onCloseDrawer = new EventEmitter<null>();
   loginForm: FormGroup;
   isLoading = false;
   submitErrorMessage: string;
@@ -29,14 +30,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSendResetPasswordEmail() {
-    this.userService.sendResetPasswordEmail(
-      this.loginForm.get('email').value
-    ).subscribe(result => {
-      debugger
-    });
-  }
-
   onSubmit() {
     if (this.loginForm.invalid) {
       return;
@@ -51,7 +44,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         console.log('login comp: %o', resp);
         switch (resp.status) {
           case 'Success':
-            // this.dialogRef.close();
+            this.onCloseDrawer.emit();
             break;
           case 'Failure':
             this.submitErrorMessage = resp.messages.pop();
@@ -70,7 +63,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     );
   }
 
-  getEmailErrorMessage() {
+  emailErrorMessage() {
     if (this.loginForm.get('email')
       .hasError('required')) {
       return 'You must enter a value';
@@ -79,7 +72,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       .hasError('email') ? 'Not a valid email' : '';
   }
 
-  getPasswordErrorMessage() {
+  passwordErrorMessage() {
     if (this.loginForm.get('password')
       .hasError('required')) {
       return 'You must enter a value';

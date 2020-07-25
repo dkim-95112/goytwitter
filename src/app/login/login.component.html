@@ -7,7 +7,7 @@
       placeholder="foo@bar.com">
     <mat-error
       *ngIf="loginForm.get('email').invalid">
-      {{getEmailErrorMessage()}}</mat-error>
+      {{emailErrorMessage()}}</mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline">
     <mat-label>Password</mat-label>
@@ -17,7 +17,7 @@
       placeholder="Password">
     <mat-error
       *ngIf="loginForm.get('password').invalid">
-      {{getPasswordErrorMessage()}}</mat-error>
+      {{passwordErrorMessage()}}</mat-error>
   </mat-form-field>
 </form>
 <mat-error *ngIf="submitErrorMessage">
@@ -30,9 +30,7 @@
     [disabled]="isLoading"
   >Login
   </button>
-  <button
-    mat-stroked-button
-    (click)="onSendResetPasswordEmail()"
-  >Send Reset Password email
-  </button>
+  <a routerLink="/reset-password"
+     (click)="onCloseDrawer.emit()"
+  >Forget Password ?</a>
 </div>

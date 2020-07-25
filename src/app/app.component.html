@@ -6,12 +6,12 @@
   <mat-drawer #myDrawer>
     <mat-tab-group #myTabs>
       <mat-tab label="Login">
-        <app-login></app-login>
+        <app-login (onCloseDrawer)="closeDrawer()"></app-login>
       </mat-tab>
-      <mat-tab label="Signup">
-        <app-signup></app-signup>
+      <mat-tab label="Sign Up">
+        <app-signup (onCloseDrawer)="closeDrawer()"></app-signup>
       </mat-tab>
-    </mat-tab-group>
+   </mat-tab-group>
   </mat-drawer>
 
   <main>

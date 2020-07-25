@@ -14,14 +14,14 @@ export class AppComponent {
   @ViewChild('myTabs') myTabs: MatTabGroup;
   title = 'tooter';
 
-  constructor(
-  ) {
+  closeDrawer() {
+    this.myDrawer.close();
   }
 
   async onSelectTab(msg: 'login' | 'signup') {
     const nextSelectedIndex = ['login', 'signup'].indexOf(msg)
-    if(this.myDrawer.opened) {
-      if(this.myTabs.selectedIndex === nextSelectedIndex){
+    if (this.myDrawer.opened) {
+      if (this.myTabs.selectedIndex === nextSelectedIndex) {
         // Close if already opened and selected
         await this.myDrawer.close()
       } else {
