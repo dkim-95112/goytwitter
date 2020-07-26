@@ -2,7 +2,6 @@ import {Component} from "@angular/core";
 import {UserService} from "../_services";
 
 @Component({
-  selector: 'forgot-password',
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.scss'],
 })
@@ -20,9 +19,9 @@ export class ForgotPasswordComponent {
   ) {
   }
 
-  async onSendResetPasswordEmail() {
+  async onSendForgotPasswordEmail() {
     this.isInProgress = true;
-    await this.userService.sendResetPasswordEmail(
+    await this.userService.sendForgotPasswordEmail(
       this.edit.email
     ).subscribe(result => {
       this.errorMessage = '';

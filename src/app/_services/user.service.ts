@@ -83,15 +83,15 @@ export class UserService {
     )
   }
 
-  sendResetPasswordEmail(email) {
-    debug('Send reset password email');
+  sendForgotPasswordEmail(email) {
+    debug('Send forgot password email');
     return this.http.post<{
       status: 'Success' | 'Failure',
       info: {
         accepted: string[];
       }
     }>(
-      `${environment.apiUrl}/users/sendmail/resetpassword`,
+      `${environment.apiUrl}/users/sendmail/forgotpassword`,
       {
         email,
       },
@@ -100,7 +100,7 @@ export class UserService {
         debug(result);
       }),
       catchError((err: HttpErrorResponse) => {
-        throw Error('Send Mail: reset-password' + err)
+        throw Error('Forgot password: ' + err)
       })
     );
   }

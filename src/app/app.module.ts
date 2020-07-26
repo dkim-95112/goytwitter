@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {RouterModule} from "@angular/router";
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
@@ -8,6 +9,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatTabsModule} from "@angular/material/tabs";
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatDrawer, MatSidenavModule} from "@angular/material/sidenav";
@@ -25,9 +27,9 @@ import {SignupComponent} from './signup/signup.component';
 import {ErrorDialogComponent} from './error-dialog/error-dialog.component';
 import {DeleteDialogComponent} from './delete-dialog/delete-dialog.component';
 import {ToolbarComponent} from "./toolbar/toolbar.component";
-import {MatTabsModule} from "@angular/material/tabs";
 import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
-import {RouterModule} from "@angular/router";
+import {ResetPasswordComponent} from "./reset-password/reset-password.component";
+import {ValueMatchingDirective} from "./_helpers/value-matching.directive";
 
 @NgModule({
   imports: [
@@ -57,6 +59,8 @@ import {RouterModule} from "@angular/router";
     HomeComponent,
     LoginComponent,
     ForgotPasswordComponent,
+    ResetPasswordComponent,
+    ValueMatchingDirective,
     SignupComponent,
     ToolbarComponent,
     TootCardComponent,
