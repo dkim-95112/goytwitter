@@ -4,7 +4,7 @@
     <input
       matInput
       formControlName="email"
-      placeholder="foo@bar.com">
+      placeholder="Email">
     <mat-error
       *ngIf="loginForm.get('email').invalid">
       {{emailErrorMessage()}}</mat-error>
@@ -30,7 +30,7 @@
     [disabled]="isLoading"
   >Login
   </button>
-  <a routerLink="/reset-password"
+  <a routerLink="/forgot-password"
      (click)="onCloseDrawer.emit()"
-  >Forget Password ?</a>
+  >Forgot Password ?</a>
 </div>

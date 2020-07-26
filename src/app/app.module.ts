@@ -26,7 +26,7 @@ import {ErrorDialogComponent} from './error-dialog/error-dialog.component';
 import {DeleteDialogComponent} from './delete-dialog/delete-dialog.component';
 import {ToolbarComponent} from "./toolbar/toolbar.component";
 import {MatTabsModule} from "@angular/material/tabs";
-import {ResetPasswordComponent} from "./reset-password/reset-password.component";
+import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
 import {RouterModule} from "@angular/router";
 
 @NgModule({
@@ -56,7 +56,7 @@ import {RouterModule} from "@angular/router";
     ErrorDialogComponent,
     HomeComponent,
     LoginComponent,
-    ResetPasswordComponent,
+    ForgotPasswordComponent,
     SignupComponent,
     ToolbarComponent,
     TootCardComponent,

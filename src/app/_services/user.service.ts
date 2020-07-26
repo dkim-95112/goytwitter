@@ -6,7 +6,7 @@ const debug = Debug('app:user:svc');
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs';
 import {User} from '../_models';
-import {catchError, map} from 'rxjs/operators';
+import {catchError, map, tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -58,7 +58,7 @@ export class UserService {
 
   getSession() {
     return this.http.get(
-      `${environment.apiUrl}/users/session`,{
+      `${environment.apiUrl}/users/session`, {
         withCredentials: true,
       }
     )
@@ -87,14 +87,20 @@ export class UserService {
     debug('Send reset password email');
     return this.http.post<{
       status: 'Success' | 'Failure',
+      info: {
+        accepted: string[];
+      }
     }>(
       `${environment.apiUrl}/users/sendmail/resetpassword`,
       {
         email,
       },
     ).pipe(
+      tap(result => {
+        debug(result);
+      }),
       catchError((err: HttpErrorResponse) => {
-        throw Error('Send Mail: reset-password' + err.error.message)
+        throw Error('Send Mail: reset-password' + err)
       })
     );
   }

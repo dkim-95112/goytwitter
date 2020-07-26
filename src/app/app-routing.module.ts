@@ -1,11 +1,11 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {HomeComponent} from './home';
-import {ResetPasswordComponent} from './reset-password/reset-password.component';
+import {ForgotPasswordComponent} from './forgot-password/forgot-password.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
-  {path: 'reset-password', component: ResetPasswordComponent},
+  {path: 'forgot-password', component: ForgotPasswordComponent},
 
   // otherwise redirect to home
   {path: '**', redirectTo: ''}
