@@ -8,7 +8,7 @@ import {UserService} from "../_services";
 
 export class ForgotPasswordComponent {
   edit = {
-    email: "",
+    email: '',
   };
   isInProgress = false;
   errorMessage = '';

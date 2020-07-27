@@ -2,7 +2,7 @@ import {environment} from '@environments/environment';
 import {Injectable} from '@angular/core';
 import Debug from 'debug';
 
-const debug = Debug('app:user:svc');
+const debug = Debug('app:svc:user.debug');
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs';
 import {User} from '../_models';
@@ -83,8 +83,24 @@ export class UserService {
     )
   }
 
+  resetPassword(queryToken, newPassword) {
+    return this.http.put<{
+      message: string
+    }>(
+      `${environment.apiUrl}/users/resetpassword`,
+      {
+        queryToken,
+        newPassword,
+      },
+    ).pipe(
+      tap(result => debug(result)),
+      catchError((err: HttpErrorResponse) => {
+        throw new Error(`Reset password: ${err}`)
+      }),
+    );
+  }
+
   sendForgotPasswordEmail(email) {
-    debug('Send forgot password email');
     return this.http.post<{
       status: 'Success' | 'Failure',
       info: {
@@ -100,7 +116,7 @@ export class UserService {
         debug(result);
       }),
       catchError((err: HttpErrorResponse) => {
-        throw Error('Forgot password: ' + err)
+        throw new Error('Forgot password: ' + err)
       })
     );
   }
@@ -144,8 +160,8 @@ export class UserService {
       }
     ).pipe(
       catchError((err: HttpErrorResponse) => {
-        console.error('user:svc:login error: %o', err);
-        throw new Error('user:svc:login error ' + err.error.message);
+        debug(err);
+        throw new Error('user:svc:login error ' + err);
       }),
       map((resp) => {
         debug('Login received: %o', resp);

@@ -1,6 +1,8 @@
 import {Component, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {valueMatchingValidator} from '../_helpers/value-matching.directive';
+import {ActivatedRoute} from "@angular/router";
+import {UserService} from "../_services";
 
 @Component({
   templateUrl: './reset-password.component.html',
@@ -12,6 +14,14 @@ export class ResetPasswordComponent implements OnInit {
     newPassword: '',
     newPasswordAgain: '',
   };
+  queryToken: string;
+  resultMessage = '';
+
+  constructor(
+    private router: ActivatedRoute,
+    private userService: UserService,
+  ) {
+  }
 
   ngOnInit() {
     this.resetPasswordForm = new FormGroup({
@@ -24,6 +34,18 @@ export class ResetPasswordComponent implements OnInit {
           () => this.newPassword && this.newPassword.value
         )
       ])
+    })
+    this.router.queryParamMap.subscribe(queryParamMap => {
+      this.queryToken = queryParamMap.get('tok')
+    })
+  }
+
+  resetPassword() {
+    this.userService.resetPassword(
+      this.queryToken,
+      this.newPassword.value,
+    ).subscribe(result => {
+      this.resultMessage = result.message;
     })
   }
 
