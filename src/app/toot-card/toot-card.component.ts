@@ -15,6 +15,7 @@ export class TootCardComponent implements OnInit {
   @Input() toot: Toot;
   public isDeleting: boolean;
   public isLoggedIn: boolean;
+  private regexLink = `(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)`
 
   constructor(
     private tootService: TootService,
@@ -27,6 +28,11 @@ export class TootCardComponent implements OnInit {
     this.userService.getLoginAsObservable().subscribe(isLoggedIn => {
       this.isLoggedIn = isLoggedIn;
     });
+  }
+
+  formatBodyText(text) {
+
+    return text;
   }
 
   onDelete() {
