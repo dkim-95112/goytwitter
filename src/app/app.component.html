@@ -1,15 +1,15 @@
 <app-toolbar
-  (onSelectTab)="onSelectTab($event)"
+  (selectTab)="onSelectTab($event)"
 ></app-toolbar>
 
 <mat-drawer-container>
   <mat-drawer #myDrawer>
     <mat-tab-group #myTabs>
       <mat-tab label="Login">
-        <app-login (onCloseDrawer)="closeDrawer()"></app-login>
+        <app-login (closeDrawer)="closeDrawer()"></app-login>
       </mat-tab>
       <mat-tab label="Sign Up">
-        <app-signup (onCloseDrawer)="closeDrawer()"></app-signup>
+        <app-signup (closeDrawer)="closeDrawer()"></app-signup>
       </mat-tab>
    </mat-tab-group>
   </mat-drawer>

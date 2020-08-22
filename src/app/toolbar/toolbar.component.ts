@@ -1,9 +1,9 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from "@angular/core";
-import {SignupComponent} from "../signup/signup.component";
-import {LoginComponent} from "../login";
-import {Router} from "@angular/router";
-import {UserService} from "../_services";
-import {Subscription} from "rxjs";
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {SignupComponent} from '../signup/signup.component';
+import {LoginComponent} from '../login';
+import {Router} from '@angular/router';
+import {UserService} from '../_services';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-toolbar',
@@ -11,7 +11,7 @@ import {Subscription} from "rxjs";
   styleUrls: ['./toolbar.component.less'],
 })
 export class ToolbarComponent implements OnInit, OnDestroy {
-  @Output() onSelectTab = new EventEmitter<'login' | 'signup'>();
+  @Output() selectTab = new EventEmitter<'login' | 'signup'>();
   userLoginSub: Subscription;
   isLoggedIn: boolean;
   displayName: string;
@@ -38,11 +38,11 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   }
 
   login() {
-    this.onSelectTab.emit('login');
+    this.selectTab.emit('login');
   }
 
   signup() {
-    this.onSelectTab.emit('signup')
+    this.selectTab.emit('signup');
   }
 
   logout() {
@@ -51,19 +51,19 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
   onGetSession() { // For debugging
     this.userService.getSession().subscribe(result => {
-      console.log('get session: ', result)
+      console.log('get session: ', result);
     });
   }
 
   onPostSession() { // For debugging
     this.userService.postSession().subscribe(result => {
-      console.log('post session: ', result)
+      console.log('post session: ', result);
     });
   }
 
   onDeleteSession() { // For debugging
     this.userService.deleteSession().subscribe(result => {
-      console.log('delete session: ', result)
-    })
+      console.log('delete session: ', result);
+    });
   }
 }

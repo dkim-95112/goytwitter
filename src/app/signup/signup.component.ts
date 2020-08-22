@@ -8,7 +8,7 @@ import {UserService} from '../_services';
   styleUrls: ['signup.component.less'],
 })
 export class SignupComponent {
-  @Output() onCloseDrawer = new EventEmitter<null>();
+  @Output() closeDrawer = new EventEmitter<null>();
   submitErrorMessages: string[];
   isLoading: boolean;
 

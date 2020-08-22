@@ -8,7 +8,7 @@ import {UserService} from '../_services';
   styleUrls: ['./login.component.less']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  @Output() onCloseDrawer = new EventEmitter<null>();
+  @Output() closeDrawer = new EventEmitter<null>();
   loginForm: FormGroup;
   isLoading = false;
   submitErrorMessage: string;
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSubmit() {
+  onSubmit(evt) {
     if (this.loginForm.invalid) {
       return;
     }
@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         console.log('login comp: %o', resp);
         switch (resp.status) {
           case 'Success':
-            this.onCloseDrawer.emit();
+            this.closeDrawer.emit();
             break;
           case 'Failure':
             this.submitErrorMessage = resp.messages.pop();
