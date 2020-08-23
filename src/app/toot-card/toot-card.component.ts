@@ -15,7 +15,7 @@ export class TootCardComponent implements OnInit {
   @Input() toot: Toot;
   public isDeleting: boolean;
   public isLoggedIn: boolean;
-  private regexLink = `(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)`
+  // private regexLink = `(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)`;
 
   constructor(
     private tootService: TootService,

@@ -1,5 +1,5 @@
-import {Component} from "@angular/core";
-import {UserService} from "../_services";
+import {Component} from '@angular/core';
+import {UserService} from '../_services';
 
 @Component({
   templateUrl: './forgot-password.component.html',
@@ -27,7 +27,7 @@ export class ForgotPasswordComponent {
       this.errorMessage = '';
       this.successMessage = `Email sent to ${
         result.info.accepted.join(', ')
-      }.`
+      }.`;
     }, error => {
       this.successMessage = '';
       this.errorMessage = error;

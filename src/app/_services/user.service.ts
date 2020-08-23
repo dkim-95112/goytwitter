@@ -12,7 +12,7 @@ import {catchError, map, tap} from 'rxjs/operators';
   providedIn: 'root'
 })
 export class UserService {
-  private _isLoggedIn: boolean;
+  private bIsLoggedIn: boolean;
   private login$: BehaviorSubject<boolean>;
 
   constructor(
@@ -20,7 +20,7 @@ export class UserService {
   ) {
     const currentUser = this.currentUser;
     this.login$ = new BehaviorSubject<boolean>(
-      this._isLoggedIn = currentUser &&
+      this.bIsLoggedIn = currentUser &&
         currentUser.token &&
         currentUser.tokenExpiry > new Date()
     );
@@ -39,7 +39,7 @@ export class UserService {
   }
 
   get isLoggedIn() {
-    return this._isLoggedIn;
+    return this.bIsLoggedIn;
   }
 
   get userId() {
@@ -61,7 +61,7 @@ export class UserService {
       `${environment.apiUrl}/users/session`, {
         withCredentials: true,
       }
-    )
+    );
   }
 
   postSession() {
@@ -71,7 +71,7 @@ export class UserService {
       {
         withCredentials: true,
       }
-    )
+    );
   }
 
   deleteSession() {
@@ -80,7 +80,7 @@ export class UserService {
       {
         withCredentials: true,
       }
-    )
+    );
   }
 
   resetPassword(queryToken, newPassword) {
@@ -95,7 +95,7 @@ export class UserService {
     ).pipe(
       tap(result => debug(result)),
       catchError((err: HttpErrorResponse) => {
-        throw new Error(`Reset password: ${err}`)
+        throw new Error(`Reset password: ${err}`);
       }),
     );
   }
@@ -116,7 +116,7 @@ export class UserService {
         debug(result);
       }),
       catchError((err: HttpErrorResponse) => {
-        throw new Error('Forgot password: ' + err)
+        throw new Error('Forgot password: ' + err);
       })
     );
   }
@@ -180,7 +180,7 @@ export class UserService {
               createDate: resp.createDate,
             }));
             this.login$.next(
-              this._isLoggedIn = true
+              this.bIsLoggedIn = true
             );
             return {
               status: 'Success',
@@ -196,9 +196,9 @@ export class UserService {
       map(value => {
         localStorage.removeItem('currentUser');
         this.login$.next(
-          this._isLoggedIn = false
+          this.bIsLoggedIn = false
         );
       })
-    )
+    );
   }
 }

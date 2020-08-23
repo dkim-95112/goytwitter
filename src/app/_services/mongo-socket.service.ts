@@ -72,7 +72,7 @@ export class MongoSocketService {
             this.deleteSubject.next(msg as MongoDeleteResponse);
             break;
           default:
-            error('handler not implemented yet: %o', msg)
+            error('handler not implemented yet: %o', msg);
             this.otherSubject.next(msg);
         }
       } else {
