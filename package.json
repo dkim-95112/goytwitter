@@ -8,8 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "s3:rm": "aws s3 rm s3://goytoot/ --dryrun --recursive --exclude '*' --include 'index.html' --include '*.js'",
-    "s3:cp": "aws s3 cp ./dist/goytoot/ s3://goytoot/ --dryrun --recursive --exclude '*' --include 'index.html' --include '*.js'"
+    "s3:rm": "aws s3 rm s3://goytoot/ --recursive --exclude '*' --include 'index.html' --include '*.js'",
+    "s3:cp": "aws s3 cp ./dist/goytoot/ s3://goytoot/ --recursive --exclude '*' --include 'index.html' --include '*.js'"
   },
   "private": true,
   "dependencies": {
