@@ -29,17 +29,16 @@ jobs:
 #        run: npm run test
 
       - name: Build
-        run: ./node_modules/.bin/ng build --prod
+        run: npm run build
 
-#      - name: Deploy
-#        env:
-#          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#        run: |
-#          aws s3 cp \
-#            --region us-east-1 \
-#            dist/goytwitter s3://arn:aws:s3:::goytoot
-#
+      - name: Deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          npm run s3:rm
+          npm run s3:cp
+
 #      - name: Notification
 #        uses: 12345/action-slack@v2.6.0
 #        with:
