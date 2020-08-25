@@ -9,5 +9,6 @@ if (environment.production) {
 // For 'debug' npm module
 localStorage.debug = environment.debug;
 
-platformBrowserDynamic().bootstrapModule(AppModule)
+platformBrowserDynamic()
+  .bootstrapModule(AppModule)
   .catch(err => console.error(err));

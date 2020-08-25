@@ -18,11 +18,8 @@ export class UserService {
   constructor(
     private http: HttpClient,
   ) {
-    const currentUser = this.currentUser;
     this.login$ = new BehaviorSubject<boolean>(
-      this.bIsLoggedIn = currentUser &&
-        currentUser.token &&
-        currentUser.tokenExpiry > new Date()
+      this.bIsLoggedIn = !!this.currentUser
     );
   }
 
@@ -58,7 +55,7 @@ export class UserService {
 
   getSession() {
     return this.http.get(
-      `${environment.apiUrl}/users/session`, {
+      `${environment.apiUrl}/user/session`, {
         withCredentials: true,
       }
     );
@@ -66,7 +63,7 @@ export class UserService {
 
   postSession() {
     return this.http.post(
-      `${environment.apiUrl}/users/session`,
+      `${environment.apiUrl}/user/session`,
       {},
       {
         withCredentials: true,
@@ -76,7 +73,7 @@ export class UserService {
 
   deleteSession() {
     return this.http.delete(
-      `${environment.apiUrl}/users/session`,
+      `${environment.apiUrl}/user/session`,
       {
         withCredentials: true,
       }
@@ -87,7 +84,7 @@ export class UserService {
     return this.http.put<{
       message: string
     }>(
-      `${environment.apiUrl}/users/resetpassword`,
+      `${environment.apiUrl}/user/resetpassword`,
       {
         queryToken,
         newPassword,
@@ -107,7 +104,7 @@ export class UserService {
         accepted: string[];
       }
     }>(
-      `${environment.apiUrl}/users/sendmail/forgotpassword`,
+      `${environment.apiUrl}/user/sendmail/forgotpassword`,
       {
         email,
       },
@@ -134,7 +131,7 @@ export class UserService {
         _id: string,
       }
     }>(
-      `${environment.apiUrl}/users/signup`,
+      `${environment.apiUrl}/user/signup`,
       {displayName, email, password},
     ).pipe(
       catchError((err: HttpErrorResponse) => {
@@ -153,7 +150,7 @@ export class UserService {
       displayName?: string,
       createDate?: string,
     }>(
-      `${environment.apiUrl}/users/login`,
+      `${environment.apiUrl}/user/login`,
       {email, password},
       {
         withCredentials: true,

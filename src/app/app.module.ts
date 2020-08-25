@@ -16,14 +16,13 @@ import {MatDrawer, MatSidenavModule} from '@angular/material/sidenav';
 import {AppComponent} from './app.component';
 import {HomeComponent} from './home';
 import {LoginComponent} from './login';
-import {JwtInterceptor, ErrorInterceptor} from './_helpers';
+import {ErrorInterceptor} from './_helpers/error.interceptor';
 import {AppRoutingModule} from './app-routing.module';
 import {TootCardComponent} from './toot-card/toot-card.component';
 import {TootListComponent} from './toot-list/toot-list.component';
 import {EnterTootComponent} from './enter-toot/enter-toot.component';
 import {EnterTootSearchComponent} from './enter-toot-search/enter-toot-search.component';
 import {SignupComponent} from './signup/signup.component';
-// import {fakeBackendInterceptor} from './_helpers';
 import {ErrorDialogComponent} from './error-dialog/error-dialog.component';
 import {DeleteDialogComponent} from './delete-dialog/delete-dialog.component';
 import {ToolbarComponent} from './toolbar/toolbar.component';
@@ -68,10 +67,9 @@ import {ValueMatchingDirective} from './_helpers/value-matching.directive';
   ],
   providers: [
     {
-    provide: MatDrawer,
-    useValue: undefined // From upgrading ng cli 9 to 10
-},
-    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+      provide: MatDrawer,
+      useValue: undefined // From upgrading ng cli 9 to 10
+    },
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
   ],
   bootstrap: [AppComponent]

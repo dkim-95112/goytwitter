@@ -15,7 +15,7 @@ import {MongoSocketService} from './mongo-socket.service';
   providedIn: 'root'
 })
 export class TootService implements OnDestroy {
-  private tootUrl = `${environment.apiUrl}/toots`; // 'assets/toots.json';
+  private tootUrl = `${environment.apiUrl}/toot`; // 'assets/toots.json';
   private toots: Toot[];
   private tootsSubject: BehaviorSubject<Toot[]>;
   private wsInsertSubscription: Subscription;
