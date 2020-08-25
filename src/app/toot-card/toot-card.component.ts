@@ -5,6 +5,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {Toot} from '../_models';
 import {TootService, UserService} from '../_services';
 import {DeleteDialogComponent} from '../delete-dialog/delete-dialog.component';
+import URI from 'urijs';
 
 @Component({
   selector: 'app-toot-card',
@@ -15,7 +16,6 @@ export class TootCardComponent implements OnInit {
   @Input() toot: Toot;
   public isDeleting: boolean;
   public isLoggedIn: boolean;
-  // private regexLink = `(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)`;
 
   constructor(
     private tootService: TootService,
@@ -31,8 +31,16 @@ export class TootCardComponent implements OnInit {
   }
 
   formatBodyText(text) {
-
-    return text;
+    return URI.withinString(text, (s) => {
+      let url = URI(s); // May not have protocol
+      if (!url.protocol()) {
+        url = URI(`https://${s}`); // Defaulting
+      }
+      return `<a
+        href="${url.href()}"
+        rel="nofollow"
+        target="_blank">${s}</a>`;
+    });
   }
 
   onDelete() {

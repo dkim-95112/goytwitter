@@ -8,8 +8,10 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "tag:create": "git tag -a v0.0.2 -m \"Taking out dryrun\"",
+    "tag:push": "git push origin v0.0.2",
     "s3:rm": "aws s3 rm s3://goytoot/ --recursive --exclude '*' --include 'index.html' --include '*.js'",
-    "s3:cp": "aws s3 cp ./dist/goytoot/ s3://goytoot/ --recursive --exclude '*' --include 'index.html' --include '*.js'"
+    "s3:cp": "aws s3 cp ./dist/goytoot/ s3://goytoot/ --acl public-read --recursive --exclude '*' --include 'index.html' --include '*.js'"
   },
   "private": true,
   "dependencies": {
@@ -25,6 +27,7 @@
     "@angular/router": "~10.0.4",
     "rxjs": "~6.5.4",
     "tslib": "^2.0.0",
+    "urijs": "^1.19.2",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
